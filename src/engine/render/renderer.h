@@ -28,7 +28,7 @@ public:
 	YColor BackGroundColor; ///< Couleur de fond. La modifier avec setBackgroundColor()
 	YTextEngine * TextEngine; ///< Rendu de texte
 	static const int CURRENT_SHADER = 0;
-	inline static int NbVBOFacesRendered; ///< Nombre de faces rendues par les VBO, incrémentées par eux a chaque frames 
+	inline static int NbVBOFacesRendered; ///< Nombre de faces rendues par les VBO, incrÃ©mentÃ©es par eux a chaque frames 
 
 private:
 	inline static YRenderer * _Me; ///< Singleton
@@ -41,7 +41,7 @@ private:
 	void(*_RenderObjectsFun)(void); ///< Fonction de rendu des objets uniquement (parfois fait n fois dans certains rendus)
 	void(*_Render2DFun)(void); ///< Rendu en 2d (en passe en mode camera ortho, etc...)
 
-	//Matrices sauvées, a passer aux shaders, calculées depuis les matrices OGL
+	//Matrices sauvÃ©es, a passer aux shaders, calculÃ©es depuis les matrices OGL
 	YMat44 MatM;
 	YMat44 MatV;
 	YMat44 MatP;
@@ -147,10 +147,10 @@ public:
 	void drawFullScreenQuad() {
 
 		glMatrixMode(GL_PROJECTION); // passe en mode matrice de projection
-		glLoadIdentity(); // Réinitialisation
+		glLoadIdentity(); // RÃ©initialisation
 
-		glMatrixMode(GL_MODELVIEW); // on repasse en mode matrice modèle
-		glLoadIdentity(); // Réinitialisation
+		glMatrixMode(GL_MODELVIEW); // on repasse en mode matrice modÃ¨le
+		glLoadIdentity(); // RÃ©initialisation
 
 		_VBOQuadFS->render();
 	}
@@ -179,9 +179,9 @@ public:
 		glLoadIdentity();
 
 		Camera->update(elapsed);
-		Camera->look(); //Initialise la matrice MV à V
+		Camera->look(); //Initialise la matrice MV Ã  V
 
-		//Rendu de la scène
+		//Rendu de la scÃ¨ne
 		if (_RenderObjectsFun != NULL)
 			(*_RenderObjectsFun)();
 
@@ -193,13 +193,13 @@ public:
 		glDisable(GL_DEPTH_TEST);
 
 		glMatrixMode(GL_PROJECTION); // passe en mode matrice de projection
-		glLoadIdentity(); // Réinitialisation
+		glLoadIdentity(); // RÃ©initialisation
 		glOrtho(0, ScreenWidth, ScreenHeight, 0, -1.0f, 2.0f); //Full screen ortho avec taille en pixels
 
-		glMatrixMode(GL_MODELVIEW); // on repasse en mode matrice modèle
-		glLoadIdentity(); // Réinitialisation
+		glMatrixMode(GL_MODELVIEW); // on repasse en mode matrice modÃ¨le
+		glLoadIdentity(); // RÃ©initialisation
 
-		//On fait le rendu 2D sur l'écran
+		//On fait le rendu 2D sur l'Ã©cran
 		if (_Render2DFun != NULL)
 			(*_Render2DFun)();
 
@@ -221,7 +221,7 @@ public:
 	//GESTION DES SHADERS
 
 	/**
-		* Permet de créer un programme de shaders, a activer quand on veut
+		* Permet de crÃ©er un programme de shaders, a activer quand on veut
 		*/
 	GLuint createProgram(const char * dossier)
 	{

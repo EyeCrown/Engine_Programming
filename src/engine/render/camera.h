@@ -1,4 +1,5 @@
 #pragma once
+#include "engine/log/log.h"
 
 
 class YCamera
@@ -16,7 +17,7 @@ public:
 	YVec3<float> Direction; ///< Direction de la camera
 	YVec3<float> UpVec; ///< Vecteur up de la camera
 	YVec3<float> RightVec; ///< Si on se place dans la camera, indique la droite	
-	YVec3<float> UpRef; ///< Ce qu'on considère comme le "haut" dans notre monde (et pas le up de la cam)
+	YVec3<float> UpRef; ///< Ce qu'on considï¿½re comme le "haut" dans notre monde (et pas le up de la cam)
 	
 
 	PROJTYPE ProjType; ///< Type de projection
@@ -67,7 +68,7 @@ public:
 	*/
 	virtual void update(float elapsed)
 	{
-
+		
 	}
 
 	/**
@@ -98,15 +99,20 @@ public:
 	}
 
 	/**
-	* Deplacement de la camera d'un delta donné
+	* Deplacement de la camera d'un delta donnï¿½
 	*/
 	void move(YVec3<float> delta)
 	{
+		Position += delta;
 		
+		float distance = (LookAt - Position).getSize();
+		LookAt = Position + Direction * distance;
+		
+		updateVecs();
 	}
 
 	/**
-	* Deplacement de la camera à un point donné
+	* Deplacement de la camera ï¿½ un point donnï¿½
 	*/
 	void moveTo(const YVec3<float> & target)
 	{
@@ -114,7 +120,7 @@ public:
 	}
 
 	/**
-	* On recalcule les vecteurs utiles au déplacement de la camera (Direction, RightVec, UpVec)
+	* On recalcule les vecteurs utiles au dï¿½placement de la camera (Direction, RightVec, UpVec)
 	* on part du principe que sont connus :
 	* - la position de la camera
 	* - le point regarde par la camera
@@ -122,7 +128,14 @@ public:
 	*/
 	void updateVecs(void)
 	{
+		Direction = LookAt - Position;
+		Direction.normalize();
+
+		RightVec = -Direction.cross(UpRef);
+		RightVec.normalize();
 		
+		UpVec = Direction.cross(RightVec);
+		UpVec.normalize();
 	}
 
 	/**
@@ -130,7 +143,13 @@ public:
 	*/
 	void rotate(float angle)
 	{
+		Direction.rotate(UpVec, angle);
+		RightVec.rotate(UpVec, angle);
 		
+		float distance = (LookAt - Position).getSize();
+		LookAt = Position + Direction * distance;
+		
+		updateVecs();
 	}
 
 	/**
@@ -138,11 +157,18 @@ public:
 	*/
 	void rotateUp(float angle)
 	{
-		
+		Direction.rotate(RightVec, angle);
+		UpVec.rotate(RightVec, angle);
+
+		float distance = (LookAt - Position).getSize();
+		LookAt = Position + Direction * distance;
+
+		updateVecs();
+
 	}
 
 	/**
-	* Rotation droite gauche en troisième personne
+	* Rotation droite gauche en troisiï¿½me personne
 	*/
 	void rotateAround(float angle)
 	{
@@ -150,7 +176,7 @@ public:
 	}
 
 	/**
-	* Rotation haut bas en troisième personne
+	* Rotation haut bas en troisiï¿½me personne
 	*/
 	void rotateUpAround(float angle)
 	{
@@ -158,7 +184,7 @@ public:
 	}
 
 	/**
-	* Calcul du bon repère de départ pour la matrice monde
+	* Calcul du bon repï¿½re de dï¿½part pour la matrice monde
 	*/
 	void look(void)
 	{
