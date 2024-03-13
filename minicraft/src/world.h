@@ -6,6 +6,7 @@
 #include "engine/utils/types_3d.h"
 #include "cube.h"
 #include "chunk.h"
+#include "engine/noise/perlin.h"
 
 class MWorld
 {
@@ -27,11 +28,14 @@ public :
 	static const int MAT_SIZE_METERS = (MAT_SIZE * MChunk::CHUNK_SIZE * MCube::CUBE_SIZE);
 	static const int MAT_HEIGHT_METERS = (MAT_HEIGHT * MChunk::CHUNK_SIZE  * MCube::CUBE_SIZE);
 
+
+	YPerlin Perlin;
+	
 	MChunk * Chunks[MAT_SIZE][MAT_SIZE][MAT_HEIGHT];
 	
 	MWorld()
 	{
-		//On crée les chunks
+		//On crï¿½e les chunks
 		for(int x=0;x<MAT_SIZE;x++)
 			for(int y=0;y<MAT_SIZE;y++)
 				for(int z=0;z<MAT_HEIGHT;z++)
@@ -65,7 +69,7 @@ public :
 					Chunks[x][y][z]->setVoisins(cxPrev,cxNext,cyPrev,cyNext,czPrev,czNext);
 				}
 
-					
+		Perlin = YPerlin();
 	}
 
 	inline MCube * getCube(int x, int y, int z)
@@ -138,6 +142,8 @@ public :
 		YLog::log(YLog::USER_INFO,(toString("Creation du monde seed ")+toString(seed)).c_str());
 
 		srand(seed);
+
+		Perlin.setFreq(0.2f);
 		
 		//Reset du monde
 		for(int x=0;x<MAT_SIZE;x++)
@@ -145,8 +151,23 @@ public :
 				for(int z=0;z<MAT_HEIGHT;z++)
 					Chunks[x][y][z]->reset();
 
-		//Générer ici le monde en modifiant les cubes
-		//Utiliser getCubes() 
+		for (int x = 0; x < MAT_SIZE_CUBES; x++)
+			for (int y = 0; y < MAT_SIZE_CUBES; y++)
+				for (int z = 0; z < MAT_HEIGHT_CUBES; z++)
+				{
+					float val = Perlin.sample((float)x, (float)y, (float)z);
+
+					MCube* cube = getCube(x, y, z);
+
+					if (val > 0.5f)
+						cube->setType(MCube::CUBE_HERBE);
+					if (val > 0.51f)
+						cube->setType(MCube::CUBE_TERRE);
+					if (val < 0.5 && z <= 0.1)
+						cube->setType(MCube::CUBE_EAU);
+					if (val > 0.56)
+						cube->setType(MCube::CUBE_EAU);
+				}
 
 		for(int x=0;x<MAT_SIZE;x++)
 			for(int y=0;y<MAT_SIZE;y++)
@@ -368,7 +389,32 @@ public :
 		
 	void render_world_basic(GLuint shader, YVbo * vboCube) 
 	{
-		
+		for (int x = MAT_SIZE_CUBES - 1; x >= 0; x--)
+			for (int y = MAT_SIZE_CUBES - 1; y >= 0; y--)
+				for (int z = MAT_HEIGHT_CUBES - 1; z >= 0; z--) 
+				{
+					MCube * cube = getCube(x, y, z);
+					MCube::MCubeType type = cube->getType();
+
+					//Si il faut le dessiner
+					if (type != MCube::CUBE_AIR && cube->getDraw()) 
+					{
+						YColor color(40.0f / 255.0f, 25.0f / 255.0f, 0.0f,1.0f);
+						if (type == MCube::CUBE_EAU)
+							color = YColor(0,0,1,0.5);
+						if (type == MCube::CUBE_HERBE)
+							color = YColor(0, 1, 0, 1);
+
+						glPushMatrix();
+						glTranslatef(x*MCube::CUBE_SIZE, y*MCube::CUBE_SIZE, z*MCube::CUBE_SIZE);
+						YRenderer::getInstance()->updateMatricesFromOgl();
+						YRenderer::getInstance()->sendMatricesToShader(shader);
+						GLuint var = glGetUniformLocation(shader, "cube_color");
+						glUniform4f(var, color.R, color.V, color.B, color.A);
+						vboCube->render();
+						glPopMatrix();
+					}
+				}
 	}
 
 	void render_world_vbo(bool debug,bool doTransparent)
@@ -381,8 +427,8 @@ public :
 	}
 
 	/**
-	* Attention ce code n'est pas optimal, il est compréhensible. Il existe de nombreuses
-	* versions optimisées de ce calcul.
+	* Attention ce code n'est pas optimal, il est comprï¿½hensible. Il existe de nombreuses
+	* versions optimisï¿½es de ce calcul.
 	*/
 	inline bool intersecDroitePlan(const YVec3f & debSegment, const  YVec3f & finSegment,
 		const YVec3f & p1Plan, const YVec3f & p2Plan, const YVec3f & p3Plan,
@@ -393,8 +439,8 @@ public :
 	}
 
 	/**
-	* Attention ce code n'est pas optimal, il est compréhensible. Il existe de nombreuses
-	* versions optimisées de ce calcul. Il faut donner les points dans l'ordre (CW ou CCW)
+	* Attention ce code n'est pas optimal, il est comprï¿½hensible. Il existe de nombreuses
+	* versions optimisï¿½es de ce calcul. Il faut donner les points dans l'ordre (CW ou CCW)
 	*/
 	inline bool intersecDroiteCubeFace(const YVec3f & debSegment, const YVec3f & finSegment,
 		const YVec3f & p1, const YVec3f & p2, const YVec3f & p3, const  YVec3f & p4,
@@ -413,7 +459,7 @@ public :
 	}
 
 	/**
-	* De meme cette fonction peut être grandement opitimisée, on a priviligié la clarté
+	* De meme cette fonction peut ï¿½tre grandement opitimisï¿½e, on a priviligiï¿½ la clartï¿½
 	*/
 	bool getRayCollisionWithCube(const YVec3f & debSegment, const YVec3f & finSegment,
 		int x, int y, int z,

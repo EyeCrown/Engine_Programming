@@ -104,10 +104,7 @@ public:
 	void move(YVec3<float> delta)
 	{
 		Position += delta;
-		
-		float distance = (LookAt - Position).getSize();
-		LookAt = Position + Direction * distance;
-		
+		LookAt += delta;
 		updateVecs();
 	}
 
@@ -116,7 +113,7 @@ public:
 	*/
 	void moveTo(const YVec3<float> & target)
 	{
-		
+		this->move(target - Position);
 	}
 
 	/**
@@ -134,7 +131,7 @@ public:
 		RightVec = -Direction.cross(UpRef);
 		RightVec.normalize();
 		
-		UpVec = Direction.cross(RightVec);
+		UpVec = RightVec.cross(RightVec);
 		UpVec.normalize();
 	}
 
@@ -143,11 +140,9 @@ public:
 	*/
 	void rotate(float angle)
 	{
-		Direction.rotate(UpVec, angle);
-		RightVec.rotate(UpVec, angle);
-		
-		float distance = (LookAt - Position).getSize();
-		LookAt = Position + Direction * distance;
+		LookAt -= Position;
+		LookAt.rotate(UpRef, angle);
+		LookAt += Position;
 		
 		updateVecs();
 	}
@@ -157,11 +152,19 @@ public:
 	*/
 	void rotateUp(float angle)
 	{
-		Direction.rotate(RightVec, angle);
-		UpVec.rotate(RightVec, angle);
+		LookAt -= Position;
 
-		float distance = (LookAt - Position).getSize();
-		LookAt = Position + Direction * distance;
+		YVec3f previousLook = LookAt;
+
+		LookAt.rotate(RightVec, angle);
+		
+		YVec3f normLook = LookAt;
+		normLook.normalize();
+		float newAngle = normLook.dot(UpRef);
+		if (newAngle > 0.99 || newAngle < -0.99)
+			LookAt = previousLook;
+
+		LookAt += Position;
 
 		updateVecs();
 
@@ -172,7 +175,10 @@ public:
 	*/
 	void rotateAround(float angle)
 	{
-		
+		Position -= LookAt;
+		Position.rotate(UpRef, angle);
+		Position += LookAt;
+		updateVecs();
 	}
 
 	/**
@@ -180,7 +186,19 @@ public:
 	*/
 	void rotateUpAround(float angle)
 	{
-		
+		Position -= LookAt;
+
+		//On ne monte pas trop haut pour ne pas passer de l'autre coté
+		YVec3f previousPos = Position;
+		Position.rotate(RightVec, angle);
+		YVec3f normPos = Position;
+		normPos.normalize();
+		float newAngle = normPos.dot(UpRef);
+		if (newAngle > 0.99 || newAngle < -0.99)
+			Position = previousPos;
+
+		Position += LookAt;
+		updateVecs();
 	}
 
 	/**

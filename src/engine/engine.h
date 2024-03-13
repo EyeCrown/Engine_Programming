@@ -24,8 +24,8 @@ public:
 	inline static float GPUPartTime = 0;
 	float FpsElapsed = 0.0f;
 	float FpsNbFrames = 0;
-	inline static float DeltaTime = 0.0f; ///< Temps écoulé depuis la dernière frame (passe a la fonction render)
-	inline static float DeltaTimeCumul = 0.0f; ///< Temps écoulé depuis le lancement de l'appli
+	inline static float DeltaTime = 0.0f; ///< Temps Ã©coulÃ© depuis la derniÃ¨re frame (passe a la fonction render)
+	inline static float DeltaTimeCumul = 0.0f; ///< Temps Ã©coulÃ© depuis le lancement de l'appli
 
 	//Rendu
 	float NearPlane = 0.1f;
@@ -104,7 +104,7 @@ public :
 			exit(EXIT_FAILURE);
 		}
 
-		//Affichage des capacités du système
+		//Affichage des capacitÃ©s du systÃ¨me
 		YLog::log(YLog::ENGINE_INFO, ("OpenGL Version : " + std::string((char*)glGetString(GL_VERSION))).c_str());
 
 		glutDisplayFunc(updateBase);

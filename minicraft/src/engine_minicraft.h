@@ -9,19 +9,17 @@
 class MEngineMinicraft : public YEngine
 {
 public :
-    GLint ShaderCubeDebug;
+    GLint ShaderCube;
     GLint ShaderSun;
 
     YVbo* VboCube;
-
+    MWorld* World;
+    
     YColor SunColor, SkyColor;
     YVec3f SunDirection, SunPosition;
 
 
     YCamera Camera;
-
-
-    SYSTEMTIME local;
 
     //Gestion singleton
     static YEngine* getInstance()
@@ -35,8 +33,7 @@ public :
     void loadShaders()
     {
         //Chargement du shader (dans loadShaders() pour etre lié à F5)
-        ShaderCubeDebug = Renderer->createProgram("shaders/cube_debug");
-
+        ShaderCube = Renderer->createProgram("shaders/cube");
         ShaderSun = Renderer->createProgram("shaders/sun");
     }
 
@@ -44,9 +41,9 @@ public :
     {
         YLog::log(YLog::ENGINE_INFO, "Minicraft Started : initialisation");
 
-        //Renderer->setBackgroundColor(YColor(0.0f,0.5f,1.0f,1.0f));
-        //Renderer->Camera->setPosition(YVec3f(10, 10, 10));
-        //Renderer->Camera->setLookAt(YVec3f());
+        Renderer->setBackgroundColor(YColor(0.0f,0.5f,1.0f,1.0f));
+        Renderer->Camera->setPosition(YVec3f(10, 10, 10));
+        Renderer->Camera->setLookAt(YVec3f());
 
         // Setup camera
         Camera = YCamera();
@@ -100,6 +97,10 @@ public :
 
         //On relache la mémoire CPU
         VboCube->deleteVboCpu();
+
+
+        
+        
     }
 
     void MySetElement(YVbo& vbo, int element, int id, YVec3f vec)
@@ -117,9 +118,6 @@ public :
 
     void update(float elapsed)
     {
-        GetLocalTime(&local);
-
-
         Camera.update(elapsed);
     }
 
@@ -141,7 +139,7 @@ public :
         glEnd();
 
 
-        computeSun();
+        /*computeSun();
 
         glPushMatrix();
         glUseProgram(ShaderSun);
@@ -159,7 +157,12 @@ public :
         Renderer->sendMatricesToShader(ShaderSun); //Envoie les matrices au shader
         VboCube->render(); //Demande le rendu du VBO
 
-        glPopMatrix();
+        glPopMatrix();*/
+
+        // glPushMatrix();
+        // glUseProgram(ShaderCube);
+        // World->render_world_basic(ShaderCube, VboCube);
+        // glPopMatrix();
     }
 
     void resize(int width, int height)
@@ -197,58 +200,103 @@ public :
             }
             break;
 
-        case 1:
-            switch (key)
-            {
-            case 0:
-                break;
-            case 1:
-                break;
-            default:
-                break;
-            }
-            break;
-
-        default:
-            break;
         }
     }
 
     void mouseWheel(int wheel, int dir, int x, int y, bool inUi)
     {
-        YLog::log(YLog::ENGINE_INFO,
-                  ("Mouse Wheel > Wheel " + to_string(wheel) + " | Dir " + to_string(dir) + " | [" + to_string(x) + ", "
-                      + to_string(y) + "]" + " | In Ui " + to_string(inUi)).c_str());
+        YLog::log(YLog::ENGINE_INFO,("Mouse Wheel > Wheel " + to_string(wheel) + " | Dir " + to_string(dir) + " | [" + to_string(x) + ", " + to_string(y) + "]" + " | In Ui " + to_string(inUi)).c_str());
 
         float step = 1.0f;
 
-        if (dir > 0)
-            YLog::log(YLog::ENGINE_INFO, ("Mouse Wheel > Zoom"));
-        else
-        {
-            YLog::log(YLog::ENGINE_INFO, ("Mouse Wheel > Dezoom"));
-            step *= -1;
-        }
-
-
-        Camera.move(Camera.Direction * step);
+        Camera.move(Camera.Direction * dir * step);
     }
 
     void mouseClick(int button, int state, int x, int y, bool inUi)
     {
         //YLog::log(YLog::ENGINE_INFO,("Mouse Click > Button " + to_string(button) + " | State " + to_string(state) + " | [" + to_string(x) + ", " + to_string(y) + "]" + " | In Ui " + to_string(inUi)).c_str());
-        int RIGHT_CLICK = 2;
-        int IS_PRESSED = 0;
-
-        if (button == RIGHT_CLICK && state == IS_PRESSED)
-        {
-            //sCamera.rotate(5);
-        }
+        
     }
 
     void mouseMove(int x, int y, bool pressed, bool inUi)
     {
         //YLog::log(YLog::ENGINE_INFO,("Mouse Move > [" + to_string(x) + ", " + to_string(y) + "]" + " | Pressed " + to_string(pressed) + " | inUi " + to_string(inUi)).c_str());
+        static int lastx = -1;
+        static int lasty = -1;
+
+        if (!pressed)
+        {
+            lastx = x;
+            lasty = y;
+            showMouse(true);
+        }
+        else
+        {
+            if (lastx == -1 && lasty == -1)
+            {
+                lastx = x;
+                lasty = y;
+            }
+
+            int dx = x - lastx;
+            int dy = y - lasty;
+
+            if (dx == 0 && dy == 0)
+                return;
+
+            lastx = x;
+            lasty = y;
+					
+            if (MouseBtnState & GUI_MRBUTTON)
+            {
+                showMouse(false);
+                if (GetKeyState(VK_LCONTROL) & 0x80)
+                {
+                    Camera.rotateAround((float)-dx / 300.0f);
+                    Camera.rotateUpAround((float)-dy / 300.0f);
+                    glutWarpPointer(Renderer->ScreenWidth / 2, Renderer->ScreenHeight / 2);
+                    lastx = Renderer->ScreenWidth / 2;
+                    lasty = Renderer->ScreenHeight / 2;
+                } else {
+                    showMouse(false);
+                    Camera.rotate((float)-dx / 300.0f);
+                    Camera.rotateUp((float)-dy / 300.0f);
+                    glutWarpPointer(Renderer->ScreenWidth / 2, Renderer->ScreenHeight / 2);
+                    lastx = Renderer->ScreenWidth / 2;
+                    lasty = Renderer->ScreenHeight / 2;
+                }	
+            }
+			
+            if (MouseBtnState & GUI_MMBUTTON)
+            {
+                showMouse(false);
+                if (GetKeyState(VK_LCONTROL) & 0x80)
+                {
+                    YVec3f strafe = Camera.RightVec;
+                    strafe.Z = 0;
+                    strafe.normalize();
+                    strafe *= (float)-dx / 2.0f;
+
+                    YVec3f avance = Camera.Direction;
+                    avance.Z = 0;
+                    avance.normalize();
+                    avance *= (float)dy / 2.0f;
+
+                    Camera.move(avance + strafe);
+                } else {
+                    YVec3f strafe = Camera.RightVec;
+                    strafe.Z = 0;
+                    strafe.normalize();
+                    strafe *= (float)-dx / 5.0f;
+
+                    Camera.move(Camera.UpRef * (float)dy / 5.0f);
+                    Camera.move(strafe);
+                    glutWarpPointer(Renderer->ScreenWidth / 2, Renderer->ScreenHeight / 2);
+                    lastx = Renderer->ScreenWidth / 2;
+                    lasty = Renderer->ScreenHeight / 2;
+                }
+            }
+        }
     }
 
 
