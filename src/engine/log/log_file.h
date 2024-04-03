@@ -12,7 +12,7 @@
 
 using namespace std;
 
-/** Interface pour les composants de gestion bas niveau du réseau
+/** Interface pour les composants de gestion bas niveau du rÃ©seau
 	*/
 class YLogFile : public YLog
 {
