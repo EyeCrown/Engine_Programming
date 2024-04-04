@@ -7,6 +7,9 @@ uniform sampler2D TexDepth;
 uniform float screen_width;
 uniform float screen_height;
 uniform vec2 near_far;
+uniform float type;
+
+#define CUBE_EAU 4.0
 
 out vec4 color_out;
 
@@ -33,6 +36,10 @@ void main (void)
     //color.r = pow(color.r,1.0/2.2);
     //color.g = pow(color.g,1.0/2.2);
     //color.b = pow(color.b,1.0/2.2);
+
+    if (type == CUBE_EAU)
+        color += vec4(0.0, 0.0, 1.0, 1.0);
+
 
 	color_out = vec4(color.rgb,1.0);
 }

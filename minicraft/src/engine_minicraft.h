@@ -110,12 +110,13 @@ public :
         glVertex3d(0, 0, 10000);
         glEnd();
 
+        GLuint var;
 
         // Sun
         updateLights(boostTime);
         glPushMatrix();
         glUseProgram(ShaderSun);
-        GLuint var = glGetUniformLocation(ShaderSun, "sun_color");
+        var = glGetUniformLocation(ShaderSun, "sun_color");
         glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
         glTranslatef(SunPosition.X, SunPosition.Y, SunPosition.Z);
         glScalef(10, 10, 10);
@@ -155,9 +156,19 @@ public :
         Fbo->setColorAsShaderInput(0, GL_TEXTURE0, "TexColor");
         Fbo->setDepthAsShaderInput(GL_TEXTURE1, "TexDepth");
 
-        GLuint var3 = glGetUniformLocation(ShaderPostProcess, "sky_color");
-        glUniform3f(var3, SkyColor.R, SkyColor.V, SkyColor.B);
+        var = glGetUniformLocation(ShaderPostProcess, "sky_color");
+        glUniform3f(var, SkyColor.R, SkyColor.V, SkyColor.B);
 
+        // Type of cube where avatar head is
+        YVec3f camPos = Renderer->Camera->Position / MCube::CUBE_SIZE;
+        MCube cubeCam = *World->getCube(camPos.X, camPos.Y, camPos.Z);
+        MCube::MCubeType type = cubeCam.getType();
+        YLog::log(YLog::ENGINE_INFO, MCube::getName(cubeCam.getType()).c_str());
+        
+        var = glGetUniformLocation(ShaderPostProcess, "type");
+        glUniform1f(var, type);
+        
+        
         Renderer->sendScreenSizeToShader(ShaderPostProcess);
         Renderer->sendNearFarToShader(ShaderPostProcess);
         Renderer->drawFullScreenQuad();
