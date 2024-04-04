@@ -33,11 +33,11 @@ class MChunk
 			_ZPos = z;
 		}
 
-		/*
+	/*
 		Creation des VBO
-		*/
+	*/
 
-		//On met le chunk ddans son VBO
+	//On met le chunk ddans son VBO
 	void toVbos(void)
 	{
 		SAFEDELETE(VboOpaque);
@@ -74,7 +74,7 @@ class MChunk
 
 	}
 
-		//Ajoute un quad du cube. Attention CCW
+	//Ajoute un quad du cube. Attention CCW
 	int addQuadToVbo(YVbo * vbo, int iVertice, YVec3f & a, YVec3f & b, YVec3f & c, YVec3f & d, float type) 
 	{
 		YVec3f normal = (b - a).cross(d - a);
@@ -384,17 +384,15 @@ class MChunk
 			return false;
 		}
 
-		void disableHiddenCubes(void)
-		{
-			for(int x=0;x<CHUNK_SIZE;x++)
-				for(int y=0;y<CHUNK_SIZE;y++)
-					for(int z=0;z<CHUNK_SIZE;z++)
-					{
-						_Cubes[x][y][z].setDraw(true);
-						if(test_hidden(x,y,z))
-							_Cubes[x][y][z].setDraw(false);
-					}
-		}
-
-
+	void disableHiddenCubes(void)
+	{
+		for(int x=0;x<CHUNK_SIZE;x++)
+			for(int y=0;y<CHUNK_SIZE;y++)
+				for(int z=0;z<CHUNK_SIZE;z++)
+				{
+					_Cubes[x][y][z].setDraw(true);
+					if(test_hidden(x,y,z))
+						_Cubes[x][y][z].setDraw(false);
+				}
+	}
 };

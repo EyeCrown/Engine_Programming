@@ -56,6 +56,7 @@ public:
 		//YRenderer::getInstance()->drawSolidCube(Width / 2);
 	}
 
+	/*
 	void update(float elapsed)
 	{
 		if (elapsed > 1.0f / 60.0f)
@@ -65,7 +66,7 @@ public:
 		//Par defaut, on applique la gravité (-100 sur Z), la moitie si dans l'eau
 		/*force = YVec3f(0, 0, -1) * 9.81f;
 		if (InWater)
-			force = YVec3f(0, 0, -1) * 0.5f;*/
+			force = YVec3f(0, 0, -1) * 0.5f;#1#
 
 		float lastheight = CurrentHeight;
 		CurrentHeight = Height;
@@ -78,7 +79,7 @@ public:
 
 		//Si l'avatar n'est pas au sol, alors il ne peut pas sauter
 		/*if (!Standing && !InWater) //On jump tout le temps
-		Jump = false;*/
+		Jump = false;#1#
 
 		float accel = 40;
 		if (Crouch)
@@ -203,30 +204,44 @@ public:
 			Speed *= pow(0.01f, elapsed);
 
 	}
+	*/
 
+	void update(float elapsed)
+	{
+		if (avance)
+			GoForward();
+		if (recule)
+			GoBackward();
+		if (gauche)
+			GoLeft();
+		if (droite)
+			GoRight();
+		
+	}
+	
 	void GoForward()
 	{
 		Position += Cam->Direction;
-		Cam->setPosition(Position);
+		Cam->moveTo(Position);
 	}
 	
 	void GoBackward()
 	{
 		Position -= Cam->Direction;
-		Cam->setPosition(Position);
+		Cam->moveTo(Position);
 	}
 
 	void GoLeft()
 	{
 		Position -= Cam->RightVec;
-		Cam->setPosition(Position);
+		Cam->moveTo(Position);
 	}
 
 	
 	void GoRight()
 	{
 		Position += Cam->RightVec;
-		Cam->setPosition(Position);
+		Cam->moveTo(Position);
 	}
 };
 

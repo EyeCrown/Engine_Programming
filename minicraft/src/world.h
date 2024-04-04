@@ -17,7 +17,7 @@ public :
 	static const int AXIS_Z = 0b00000100;
 
 	#ifdef _DEBUG
-	static const int MAT_SIZE = 1; //en nombre de chunks
+	static const int MAT_SIZE = 2; //en nombre de chunks
 	#else
 	static const int MAT_SIZE = 3; //en nombre de chunks
 	#endif // DEBUG
@@ -29,7 +29,7 @@ public :
 	static const int MAT_HEIGHT_METERS = (MAT_HEIGHT * MChunk::CHUNK_SIZE  * MCube::CUBE_SIZE);
 
 
-	YPerlin Perlin;
+	MPerlin Perlin;
 	
 	MChunk * Chunks[MAT_SIZE][MAT_SIZE][MAT_HEIGHT];
 	
@@ -69,7 +69,7 @@ public :
 					Chunks[x][y][z]->setVoisins(cxPrev,cxNext,cyPrev,cyNext,czPrev,czNext);
 				}
 
-		Perlin = YPerlin();
+		Perlin = MPerlin();
 	}
 
 	inline MCube * getCube(int x, int y, int z)
@@ -155,9 +155,14 @@ public :
 			for (int y = 0; y < MAT_SIZE_CUBES; y++)
 				for (int z = 0; z < MAT_HEIGHT_CUBES; z++)
 				{
+					Perlin.DoPenaltyMiddle = true;
+					Perlin.setFreq(0.04f);
 					float val = Perlin.sample((float)x, (float)y, (float)z);
+					Perlin.DoPenaltyMiddle = false;
+					Perlin.setFreq(0.2f);
+					val -= (1.0f - max(val, Perlin.sample((float)x, (float)y, (float)z))) / 20.0f;
 
-					MCube* cube = getCube(x, y, z);
+					MCube * cube = getCube(x, y, z);
 
 					if (val > 0.5f)
 						cube->setType(MCube::CUBE_HERBE);

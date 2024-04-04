@@ -78,7 +78,7 @@ public :
     void update(float elapsed)
     {
         Renderer->Camera->update(elapsed);
-        //Avatar->update(elapsed);
+        Avatar->update(elapsed);
     }
 
     void renderObjects()
@@ -133,13 +133,13 @@ public :
         YLog::log(YLog::ENGINE_INFO, ("Key Pressed > Key " + to_string(key) + " | Special " + to_string(special) + " | Down " + to_string(down) + " | P1 " + to_string(p1) + " | P2 " + to_string(p2)).c_str());
 
         if (key == 'z' || key == 'Z')
-            Avatar->GoForward();
+            Avatar->avance = down;
         if (key == 's' || key == 'S')
-            Avatar->GoBackward();
+            Avatar->recule = down;
         if (key == 'q' || key == 'Q')
-            Avatar->GoLeft();
+            Avatar->gauche = down;
         if (key == 'd' || key == 'D')
-            Avatar->GoRight();
+            Avatar->droite = down;
         
     }
 
