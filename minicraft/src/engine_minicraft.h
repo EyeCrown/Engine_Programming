@@ -6,19 +6,22 @@
 #include "avatar.h"
 #include "world.h"
 
+
 class MEngineMinicraft : public YEngine
 {
 public :
     GLint ShaderCube;
     GLint ShaderSun;
     GLint ShaderWorld;
+    GLint ShaderPostProcess;
     GLint ShaderBirds;
 
     MWorld* World;
 
-    YVbo* VboCube;
+    YVbo* SunCube;
     YColor SunColor, SkyColor;
     YVec3f SunDirection, SunPosition;
+    float boostTime;
 
 
     YCamera Camera;
@@ -37,6 +40,9 @@ public :
         //Chargement du shader (dans loadShaders() pour etre lié à F5)
         ShaderCube = Renderer->createProgram("shaders/cube");
         ShaderSun = Renderer->createProgram("shaders/sun");
+        ShaderWorld = Renderer->createProgram("shaders/world");
+        ShaderPostProcess = Renderer->createProgram("shaders/postprocess");
+        ShaderBirds = Renderer->createProgram("shaders/birds");
     }
 
     void init()
@@ -55,23 +61,18 @@ public :
         Renderer->Camera = &Camera;
 
         //Creation du VBO
-        VboCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
-
+        SunCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
         //Définition du contenu du VBO
-        VboCube->setElementDescription(0, YVbo::Element(3)); //Sommet
-        VboCube->setElementDescription(1, YVbo::Element(3)); //Normale
-        VboCube->setElementDescription(2, YVbo::Element(2)); //UV
-
+        SunCube->setElementDescription(0, YVbo::Element(3)); //Sommet
+        SunCube->setElementDescription(1, YVbo::Element(3)); //Normale
+        SunCube->setElementDescription(2, YVbo::Element(2)); //UV
         //On demande d'allouer la mémoire coté CPU
-        VboCube->createVboCpu();
-
-        
-
+        SunCube->createVboCpu();
+        fillVBOCube(SunCube);
         //On envoie le contenu au GPU
-        VboCube->createVboGpu();
-
+        SunCube->createVboGpu();
         //On relache la mémoire CPU
-        VboCube->deleteVboCpu();
+        SunCube->deleteVboCpu();
 
 
         
@@ -101,29 +102,22 @@ public :
         glEnd();
 
 
-        /*computeSun();
-
+        // Sun
+        updateLights(boostTime);
         glPushMatrix();
         glUseProgram(ShaderSun);
-
         GLuint var = glGetUniformLocation(ShaderSun, "sun_color");
         glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
-
-        glRotatef(this->DeltaTimeCumul / 10.0f * 360, -1, -1, 1);
-
         glTranslatef(SunPosition.X, SunPosition.Y, SunPosition.Z);
-
-        Renderer->setBackgroundColor(SkyColor);
-
-        Renderer->updateMatricesFromOgl(); //Calcule toute les matrices à partir des deux matrices OGL
-        Renderer->sendMatricesToShader(ShaderSun); //Envoie les matrices au shader
-        VboCube->render(); //Demande le rendu du VBO
-
-        glPopMatrix();*/
+        glScalef(10, 10, 10);
+        Renderer->updateMatricesFromOgl();
+        Renderer->sendMatricesToShader(ShaderSun);
+        SunCube->render();
+        glPopMatrix();
 
         // glPushMatrix();
         // glUseProgram(ShaderCube);
-        // World->render_world_basic(ShaderCube, VboCube);
+        // World->render_world_basic(ShaderCube, SunCube);
         // glPopMatrix();
     }
 
@@ -234,8 +228,140 @@ public :
 
 
     /* Sun calculs */
+    bool getSunDirFromDayTime(YVec3f & sunDir, float mnLever, float mnCoucher, float boostTime)
+    {
+        bool nuit = false;
 
-    
+        SYSTEMTIME t;
+        GetLocalTime(&t);
+
+        //On borne le tweak time à une journée (cyclique)
+        while (boostTime > 24 * 60)
+            boostTime -= 24 * 60;
+
+        //Temps écoulé depuis le début de la journée
+        float fTime = (float)(t.wHour * 60 + t.wMinute);
+        fTime += boostTime;
+        while (fTime > 24 * 60)
+            fTime -= 24 * 60;
+
+        //Si c'est la nuit
+        if (fTime < mnLever || fTime > mnCoucher)
+        {
+            nuit = true;
+            if (fTime < mnLever)
+                fTime += 24 * 60;
+            fTime -= mnCoucher;
+            fTime /= (mnLever + 24 * 60 - mnCoucher);
+            fTime *= (float)M_PI;
+        }
+        else
+        {
+            //c'est le jour
+            nuit = false;
+            fTime -= mnLever;
+            fTime /= (mnCoucher - mnLever);
+            fTime *= (float)M_PI;
+        }
+
+        //Direction du soleil en fonction de l'heure
+        sunDir.X = cos(fTime);
+        sunDir.Y = 0.2f;
+        sunDir.Z = sin(fTime);
+        sunDir.normalize();
+
+        return nuit;
+    }
+    void updateLights(float boostTime = 0) 
+    {		
+        //On recup la direciton du soleil
+        bool nuit = getSunDirFromDayTime(SunDirection, 6.0f * 60.0f, 19.0f * 60.0f, boostTime);
+        SunPosition = Renderer->Camera->Position + SunDirection * 500.0f;
+
+        //Pendant la journée
+        if (!nuit)
+        {
+            //On definit la couleur
+            SunColor =  YColor(1.0f, 1.0f, 0.8f, 1.0f);
+            SkyColor = YColor(0.0f, 181.f / 255.f, 221.f / 255.f, 1.0f);
+            YColor downColor(0.9f, 0.5f, 0.1f, 1);
+		
+            SunColor = SunColor.interpolate(downColor, (abs(SunDirection.X)));
+            SkyColor = SkyColor.interpolate(downColor, (abs(SunDirection.X)));
+        }
+        else
+        {
+            //La nuit : lune blanche et ciel noir
+            SunColor =  YColor(1, 1, 1, 1);
+            SkyColor = YColor(0, 0, 0, 1);
+        }
+
+        Renderer->setBackgroundColor(SkyColor);
+    }
+
+    int addQuadToVbo(YVbo * vbo, int iVertice, YVec3f & a, YVec3f & b, YVec3f & c, YVec3f & d) 
+    {
+        YVec3f normal = (b - a).cross(d - a);
+        normal.normalize();
+
+        vbo->setElementValue(0, iVertice, a.X, a.Y, a.Z);
+        vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+        vbo->setElementValue(2, iVertice, 0, 0);
+
+        iVertice++;
+
+        vbo->setElementValue(0, iVertice, b.X, b.Y, b.Z);
+        vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+        vbo->setElementValue(2, iVertice, 1, 0);
+
+        iVertice++;
+
+        vbo->setElementValue(0, iVertice, c.X, c.Y, c.Z);
+        vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+        vbo->setElementValue(2, iVertice, 1, 1);
+
+        iVertice++;
+
+        vbo->setElementValue(0, iVertice, a.X, a.Y, a.Z);
+        vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+        vbo->setElementValue(2, iVertice, 0, 0);
+
+        iVertice++;
+
+        vbo->setElementValue(0, iVertice, c.X, c.Y, c.Z);
+        vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+        vbo->setElementValue(2, iVertice, 1, 1);
+
+        iVertice++;
+
+        vbo->setElementValue(0, iVertice, d.X, d.Y, d.Z);
+        vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+        vbo->setElementValue(2, iVertice, 0, 1);
+
+        iVertice++;
+
+        return 6;
+    }
+    void fillVBOCube(YVbo * vbo, float size = 5.0f) 
+    {
+        int iVertice = 0;
+
+        YVec3f a( size / 2.0f, -size / 2.0f, -size / 2.0f);
+        YVec3f b( size / 2.0f,  size / 2.0f, -size / 2.0f);
+        YVec3f c( size / 2.0f,  size / 2.0f,  size / 2.0f);
+        YVec3f d( size / 2.0f, -size / 2.0f,  size / 2.0f);
+        YVec3f e(-size / 2.0f, -size / 2.0f, -size / 2.0f);
+        YVec3f f(-size / 2.0f,  size / 2.0f, -size / 2.0f);
+        YVec3f g(-size / 2.0f,  size / 2.0f,  size / 2.0f);
+        YVec3f h(-size / 2.0f, -size / 2.0f,  size / 2.0f);
+
+        iVertice += addQuadToVbo(vbo, iVertice, a, b, c, d); //x+
+        iVertice += addQuadToVbo(vbo, iVertice, f, e, h, g); //x-
+        iVertice += addQuadToVbo(vbo, iVertice, b, f, g, c); //y+
+        iVertice += addQuadToVbo(vbo, iVertice, e, a, d, h); //y-
+        iVertice += addQuadToVbo(vbo, iVertice, c, g, h, d); //z+
+        iVertice += addQuadToVbo(vbo, iVertice, e, f, b, a); //z-
+    }
 };
 
 

@@ -17,13 +17,13 @@ public:
 	YVec3<float> Direction; ///< Direction de la camera
 	YVec3<float> UpVec; ///< Vecteur up de la camera
 	YVec3<float> RightVec; ///< Si on se place dans la camera, indique la droite	
-	YVec3<float> UpRef; ///< Ce qu'on consid�re comme le "haut" dans notre monde (et pas le up de la cam)
+	YVec3<float> UpRef; ///< Ce qu'on considère comme le "haut" dans notre monde (et pas le up de la cam)
 	
 
 	PROJTYPE ProjType; ///< Type de projection
 	float FovY; ///< fov angle sur y in degrees
 	float Ratio; ///< with / height
-	float Left; ///< Left YPlane
+	float Left; ///< Left Plane
 	float Right;
 	float Bottom;
 	float Top;
@@ -62,13 +62,12 @@ public:
 		Far = farPlane;
 	}
 
-
 	/**
 	* Mise a jour de la camera
 	*/
 	virtual void update(float elapsed)
 	{
-		
+
 	}
 
 	/**
@@ -99,7 +98,7 @@ public:
 	}
 
 	/**
-	* Deplacement de la camera d'un delta donn�
+	* Deplacement de la camera d'un delta donné
 	*/
 	void move(YVec3<float> delta)
 	{
@@ -109,7 +108,7 @@ public:
 	}
 
 	/**
-	* Deplacement de la camera � un point donn�
+	* Deplacement de la camera d'un delta donné
 	*/
 	void moveTo(const YVec3<float> & target)
 	{
@@ -117,7 +116,7 @@ public:
 	}
 
 	/**
-	* On recalcule les vecteurs utiles au d�placement de la camera (Direction, RightVec, UpVec)
+	* On recalcule les vecteurs utiles au déplacement de la camera (Direction, RightVec, UpVec)
 	* on part du principe que sont connus :
 	* - la position de la camera
 	* - le point regarde par la camera
@@ -125,13 +124,15 @@ public:
 	*/
 	void updateVecs(void)
 	{
-		Direction = LookAt - Position;
+		Direction = LookAt;
+		Direction -= Position;
 		Direction.normalize();
 
-		RightVec = -Direction.cross(UpRef);
+		UpVec = UpRef;
+		RightVec = Direction.cross(UpVec);
 		RightVec.normalize();
-		
-		UpVec = RightVec.cross(RightVec);
+
+		UpVec = RightVec.cross(Direction);
 		UpVec.normalize();
 	}
 
@@ -143,7 +144,6 @@ public:
 		LookAt -= Position;
 		LookAt.rotate(UpRef, angle);
 		LookAt += Position;
-		
 		updateVecs();
 	}
 
@@ -167,11 +167,10 @@ public:
 		LookAt += Position;
 
 		updateVecs();
-
 	}
 
 	/**
-	* Rotation droite gauche en troisi�me personne
+	* Rotation droite gauche en troisième personne
 	*/
 	void rotateAround(float angle)
 	{
@@ -182,7 +181,7 @@ public:
 	}
 
 	/**
-	* Rotation haut bas en troisi�me personne
+	* Rotation haut bas en troisième personne
 	*/
 	void rotateUpAround(float angle)
 	{
@@ -202,7 +201,7 @@ public:
 	}
 
 	/**
-	* Calcul du bon rep�re de d�part pour la matrice monde
+	* Calcul du bon repère de départ pour la matrice monde
 	*/
 	void look(void)
 	{
@@ -217,7 +216,6 @@ public:
 		
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		gluLookAt(Position.X, Position.Y, Position.Z, LookAt.X, LookAt.Y, LookAt.Z, UpVec.X, UpVec.Y, UpVec.Z);
-		
+		gluLookAt(Position.X, Position.Y, Position.Z, LookAt.X, LookAt.Y, LookAt.Z, UpVec.X, UpVec.Y, UpVec.Z);	
 	}
 };
