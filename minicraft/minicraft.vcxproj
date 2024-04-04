@@ -45,6 +45,9 @@
     <None Include="run\shaders\world\fs.glsl" />
     <None Include="run\shaders\world\vs.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="run\atlas.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{17FD557D-42BC-4AF9-ABD2-025A8F8A621D}</ProjectGuid>

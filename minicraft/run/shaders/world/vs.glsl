@@ -13,10 +13,12 @@ layout(location=3) in float vs_type_in;
 out vec3 normal;
 out vec4 color;
 out vec2 uv;
+out float type;
 
 #define CUBE_HERBE 0.0
 #define CUBE_TERRE 1.0
 #define CUBE_EAU 4.0
+
 
 void main()
 {
@@ -26,7 +28,7 @@ void main()
 	normal = (nmat * vec4(vs_normal_in,1.0)).xyz; 
 
 	uv = vs_uv_in;
-
+    type = vs_type_in;
 	//Couleur par défaut violet
 	color = vec4(1.0,1.0,0.0,1.0);
 

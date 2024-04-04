@@ -419,7 +419,7 @@ private:
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		if (!isPowerOfTwo(texFile.SizeX)) {
+		/*if (!isPowerOfTwo(texFile.SizeX)) {
 			YLog::log(YLog::ENGINE_WARNING, (texFile.File + " has not width power of two").c_str());
 			return 3;
 		}
@@ -427,7 +427,7 @@ private:
 		if (!isPowerOfTwo(texFile.SizeY)) {
 			YLog::log(YLog::ENGINE_WARNING, (texFile.File + " has not height power of two").c_str());
 			return 4;
-		}
+		}*/
 
 
 		//Texture chargee

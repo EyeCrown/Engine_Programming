@@ -17,7 +17,9 @@ public :
     GLint ShaderBirds;
 
     YFbo* Fbo;
-    
+
+    YTexFile * MainTexture = NULL;
+    YTexManager * TexManager = NULL;
 
     YVbo* SunCube;
     YColor SunColor, SkyColor;
@@ -79,7 +81,8 @@ public :
         World = new MWorld();
         World->init_world(0);
         
-        
+        MainTexture = TexManager->getInstance()->loadTexture("atlas.png");
+        TexManager->getInstance()->loadTextureToOgl(*MainTexture);
     }
     
     void update(float elapsed)
@@ -128,6 +131,8 @@ public :
         glPushMatrix();
         glUseProgram(ShaderWorld);
         Renderer->sendTimeToShader(FpsElapsed, ShaderWorld);
+        
+        MainTexture->setAsShaderInput(ShaderWorld, GL_TEXTURE0, "myTexture");
         
         World->render_world_vbo(false, true);
         glPopMatrix();
