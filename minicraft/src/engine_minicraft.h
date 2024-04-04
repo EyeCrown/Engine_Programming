@@ -23,8 +23,7 @@ public :
     YVec3f SunDirection, SunPosition;
     float boostTime;
 
-
-    YCamera Camera;
+    MAvatar* Avatar;
 
     //Gestion singleton
     static YEngine* getInstance()
@@ -53,12 +52,8 @@ public :
         Renderer->Camera->setPosition(YVec3f(10, 10, 10));
         Renderer->Camera->setLookAt(YVec3f());
 
-        // Setup camera
-        Camera = YCamera();
-        Camera.setPosition(YVec3f(10, 10, 10));
-        Camera.setLookAt(YVec3f());
+        Avatar = new MAvatar(Renderer->Camera, World);        
 
-        Renderer->Camera = &Camera;
 
         //Creation du VBO
         SunCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
@@ -74,14 +69,16 @@ public :
         //On relache la mémoire CPU
         SunCube->deleteVboCpu();
 
-
+        // World
+        World = new MWorld();
+        World->init_world(0);
         
         
     }
     
     void update(float elapsed)
     {
-        Camera.update(elapsed);
+        Renderer->Camera->update(elapsed);
     }
 
     void renderObjects()
@@ -115,10 +112,14 @@ public :
         SunCube->render();
         glPopMatrix();
 
-        // glPushMatrix();
-        // glUseProgram(ShaderCube);
-        // World->render_world_basic(ShaderCube, SunCube);
-        // glPopMatrix();
+
+        // World
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+        glPushMatrix();
+        glUseProgram(ShaderWorld);
+        World->render_world_vbo(false, true);
+        glPopMatrix();
     }
 
     void resize(int width, int height)
@@ -179,15 +180,15 @@ public :
                 showMouse(false);
                 if (GetKeyState(VK_LCONTROL) & 0x80)
                 {
-                    Camera.rotateAround((float)-dx / 300.0f);
-                    Camera.rotateUpAround((float)-dy / 300.0f);
+                    Renderer->Camera->rotateAround((float)-dx / 300.0f);
+                    Renderer->Camera->rotateUpAround((float)-dy / 300.0f);
                     glutWarpPointer(Renderer->ScreenWidth / 2, Renderer->ScreenHeight / 2);
                     lastx = Renderer->ScreenWidth / 2;
                     lasty = Renderer->ScreenHeight / 2;
                 } else {
                     showMouse(false);
-                    Camera.rotate((float)-dx / 300.0f);
-                    Camera.rotateUp((float)-dy / 300.0f);
+                    Renderer->Camera->rotate((float)-dx / 300.0f);
+                    Renderer->Camera->rotateUp((float)-dy / 300.0f);
                     glutWarpPointer(Renderer->ScreenWidth / 2, Renderer->ScreenHeight / 2);
                     lastx = Renderer->ScreenWidth / 2;
                     lasty = Renderer->ScreenHeight / 2;
@@ -199,25 +200,25 @@ public :
                 showMouse(false);
                 if (GetKeyState(VK_LCONTROL) & 0x80)
                 {
-                    YVec3f strafe = Camera.RightVec;
+                    YVec3f strafe = Renderer->Camera->RightVec;
                     strafe.Z = 0;
                     strafe.normalize();
                     strafe *= (float)-dx / 2.0f;
 
-                    YVec3f avance = Camera.Direction;
+                    YVec3f avance = Renderer->Camera->Direction;
                     avance.Z = 0;
                     avance.normalize();
                     avance *= (float)dy / 2.0f;
 
-                    Camera.move(avance + strafe);
+                    Renderer->Camera->move(avance + strafe);
                 } else {
-                    YVec3f strafe = Camera.RightVec;
+                    YVec3f strafe = Renderer->Camera->RightVec;
                     strafe.Z = 0;
                     strafe.normalize();
                     strafe *= (float)-dx / 5.0f;
 
-                    Camera.move(Camera.UpRef * (float)dy / 5.0f);
-                    Camera.move(strafe);
+                    Renderer->Camera->move(Renderer->Camera->UpRef * (float)dy / 5.0f);
+                    Renderer->Camera->move(strafe);
                     glutWarpPointer(Renderer->ScreenWidth / 2, Renderer->ScreenHeight / 2);
                     lastx = Renderer->ScreenWidth / 2;
                     lasty = Renderer->ScreenHeight / 2;

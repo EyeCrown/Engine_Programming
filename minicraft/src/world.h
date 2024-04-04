@@ -420,10 +420,35 @@ public :
 	void render_world_vbo(bool debug,bool doTransparent)
 	{
 		glDisable(GL_BLEND);
-		//Dessiner les chunks opaques
-				
+		for (int x = 0; x < MAT_SIZE; x++)
+			for (int y = 0; y < MAT_SIZE; y++)
+				for (int z = MAT_HEIGHT - 1; z >= 0; z--)
+				{
+					glPushMatrix();
+					glTranslatef((float)(x * MChunk::CHUNK_SIZE * MCube::CUBE_SIZE), (float)(y * MChunk::CHUNK_SIZE * MCube::CUBE_SIZE), (float)(z * MChunk::CHUNK_SIZE * MCube::CUBE_SIZE));
+					YRenderer::getInstance()->updateMatricesFromOgl();
+					YRenderer::getInstance()->sendMatricesToShader(YRenderer::CURRENT_SHADER);
+					Chunks[x][y][z]->render(false);
+					glPopMatrix();
+				}
+
+
 		glEnable(GL_BLEND);
-		//Dessiner les chunks transparents
+		if (doTransparent)
+		{
+			for (int x = 0; x < MAT_SIZE; x++)
+				for (int y = 0; y < MAT_SIZE; y++)
+					for (int z = 0; z < MAT_HEIGHT; z++)
+					{
+						glPushMatrix();
+						glTranslatef((float)(x * MChunk::CHUNK_SIZE * MCube::CUBE_SIZE), (float)(y * MChunk::CHUNK_SIZE * MCube::CUBE_SIZE), (float)(z * MChunk::CHUNK_SIZE * MCube::CUBE_SIZE));
+						YRenderer::getInstance()->updateMatricesFromOgl();
+						YRenderer::getInstance()->sendMatricesToShader(YRenderer::CURRENT_SHADER);
+						Chunks[x][y][z]->render(true);
+						glPopMatrix();
+					}
+		}
+		glDepthMask(true);
 	}
 
 	/**

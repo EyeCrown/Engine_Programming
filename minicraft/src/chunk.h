@@ -18,6 +18,9 @@ class MChunk
 		YVbo * VboOpaque = NULL;
 		YVbo * VboTransparent = NULL;
 
+		int _NbVertices_Opaque;
+		int _NbVertices_Transparent;
+
 		MChunk * Voisins[6];
 
 		int _XPos, _YPos, _ZPos; ///< Position du chunk dans le monde
@@ -35,30 +38,218 @@ class MChunk
 		*/
 
 		//On met le chunk ddans son VBO
-		void toVbos(void)
-		{
-			SAFEDELETE(VboOpaque);
-			SAFEDELETE(VboTransparent);
+	void toVbos(void)
+	{
+		SAFEDELETE(VboOpaque);
+		SAFEDELETE(VboTransparent);
 
-			//Compter les sommets
+		//On compte juste
+		foreachVisibleTriangle(true, &_NbVertices_Opaque, &_NbVertices_Transparent, VboOpaque, VboTransparent);
 
-			//Créer les VBO
+		//Creation des vbo
+		VboOpaque = new YVbo(4, _NbVertices_Opaque, YVbo::PACK_BY_ELEMENT_TYPE);
+		VboTransparent = new YVbo(4, _NbVertices_Transparent, YVbo::PACK_BY_ELEMENT_TYPE);
 
-			//Remplir les VBO
-			
-		}
+		VboOpaque->setElementDescription(0, YVbo::Element(3)); //Sommet
+		VboOpaque->setElementDescription(1, YVbo::Element(3)); //Normale
+		VboOpaque->setElementDescription(2, YVbo::Element(2)); //Uv
+		VboOpaque->setElementDescription(3, YVbo::Element(1)); //Type
+
+		VboTransparent->setElementDescription(0, YVbo::Element(3)); //Sommet
+		VboTransparent->setElementDescription(1, YVbo::Element(3)); //Normale
+		VboTransparent->setElementDescription(2, YVbo::Element(2)); //Uv
+		VboTransparent->setElementDescription(3, YVbo::Element(1)); //Type
+
+		VboOpaque->createVboCpu();
+		VboTransparent->createVboCpu();
+
+		//On remplit les VBOs
+		foreachVisibleTriangle(false, &_NbVertices_Opaque, &_NbVertices_Transparent, VboOpaque, VboTransparent);
+
+		VboOpaque->createVboGpu();
+		VboTransparent->createVboGpu();
+
+		VboOpaque->deleteVboCpu();
+		VboTransparent->deleteVboCpu();
+
+	}
 
 		//Ajoute un quad du cube. Attention CCW
-		int addQuadToVbo(YVbo * vbo, int iVertice, YVec3f & a, YVec3f & b, YVec3f & c, YVec3f & d, float type) {
+	int addQuadToVbo(YVbo * vbo, int iVertice, YVec3f & a, YVec3f & b, YVec3f & c, YVec3f & d, float type) 
+	{
+		YVec3f normal = (b - a).cross(d - a);
+		normal.normalize();
 
-			return 6;
+		vbo->setElementValue(0, iVertice, a.X, a.Y, a.Z);
+		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+		vbo->setElementValue(2, iVertice, 0, 0);
+		vbo->setElementValue(3, iVertice, type);
+
+		iVertice++;
+
+		vbo->setElementValue(0, iVertice, b.X, b.Y, b.Z);
+		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+		vbo->setElementValue(2, iVertice, 1, 0);
+		vbo->setElementValue(3, iVertice, type);
+
+		iVertice++;
+
+		vbo->setElementValue(0, iVertice, c.X, c.Y, c.Z);
+		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+		vbo->setElementValue(2, iVertice, 1, 1);
+		vbo->setElementValue(3, iVertice, type);
+
+		iVertice++;
+
+		vbo->setElementValue(0, iVertice, a.X, a.Y, a.Z);
+		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+		vbo->setElementValue(2, iVertice, 0, 0);
+		vbo->setElementValue(3, iVertice, type);
+
+		iVertice++;
+
+		vbo->setElementValue(0, iVertice, c.X, c.Y, c.Z);
+		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+		vbo->setElementValue(2, iVertice, 1, 1);
+		vbo->setElementValue(3, iVertice, type);
+
+		iVertice++;
+
+		vbo->setElementValue(0, iVertice, d.X, d.Y, d.Z);
+		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
+		vbo->setElementValue(2, iVertice, 0, 1);
+		vbo->setElementValue(3, iVertice, type);
+
+		iVertice++;
+
+		return 6;
+	}
+
+	//Permet de compter les triangles ou des les ajouter aux VBO
+	void foreachVisibleTriangle(bool countOnly, int * nbVertOpaque, int * nbVertTransp, YVbo * VboOpaque, YVbo * VboTrasparent) 
+	{
+		int type = 0;
+		MCube * cube;
+		int nbVertices = 0;
+		int iVerticeOpaque = 0;
+		int iVerticeTransp = 0;
+		int * iVertice = &iVerticeOpaque;
+		//On parcourt tous nos cubes
+		for (int x = 0; x < CHUNK_SIZE; x++)
+		{
+			for (int y = 0; y < CHUNK_SIZE; y++)
+			{
+				for (int z = 0; z < CHUNK_SIZE; z++)
+				{
+					cube = &(_Cubes[x][y][z]);
+					type = cube->getType();
+
+					if (cube->getDraw() && type != MCube::CUBE_AIR)
+					{
+						//Position du cube (coin bas gauche face avant)
+						float xPos = x * (float)MCube::CUBE_SIZE;
+						float yPos = y * (float)MCube::CUBE_SIZE;
+						float zPos = z * (float)MCube::CUBE_SIZE;
+
+						YVec3f a(xPos + MCube::CUBE_SIZE, yPos, zPos);
+						YVec3f b(xPos + MCube::CUBE_SIZE, yPos + MCube::CUBE_SIZE, zPos);
+						YVec3f c(xPos + MCube::CUBE_SIZE, yPos + MCube::CUBE_SIZE, zPos + MCube::CUBE_SIZE);
+						YVec3f d(xPos + MCube::CUBE_SIZE, yPos, zPos + MCube::CUBE_SIZE);
+						YVec3f e(xPos, yPos, zPos);
+						YVec3f f(xPos, yPos + MCube::CUBE_SIZE, zPos);
+						YVec3f g(xPos, yPos + MCube::CUBE_SIZE, zPos + MCube::CUBE_SIZE);
+						YVec3f h(xPos, yPos, zPos + MCube::CUBE_SIZE);
+
+						MCube * cubeXPrev = NULL;
+						MCube * cubeXNext = NULL;
+						MCube * cubeYPrev = NULL;
+						MCube * cubeYNext = NULL;
+						MCube * cubeZPrev = NULL;
+						MCube * cubeZNext = NULL;
+
+						get_surrounding_cubes(
+							x, y, z,
+							&cubeXPrev, &cubeXNext,
+							&cubeYPrev, &cubeYNext,
+							&cubeZPrev, &cubeZNext);
+
+						iVertice = &iVerticeTransp;
+						if (countOnly)
+							iVertice = nbVertTransp;								
+						YVbo * vbo = VboTransparent;
+						if (cube->isOpaque()) {
+							iVertice = &iVerticeOpaque;
+							if (countOnly)
+								iVertice = nbVertOpaque;
+							vbo = VboOpaque;
+						}
+						
+						//Premier QUAD (x+)
+						if (cubeXNext == NULL ||
+							(cube->isOpaque() && !cubeXNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeXNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+						{
+							if (!countOnly)
+								addQuadToVbo(vbo, *iVertice, a, b, c, d, type); //x+
+							*iVertice += 6;
+						}
+
+						//Second QUAD (x-)
+						if (cubeXPrev == NULL ||
+							(cube->isOpaque() && !cubeXPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeXPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+						{
+							if (!countOnly)
+								addQuadToVbo(vbo, *iVertice, f, e, h, g, type); //x-
+							*iVertice += 6;
+						}
+
+
+						//Troisieme QUAD (y+)
+						if (cubeYNext == NULL ||
+							(cube->isOpaque() && !cubeYNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeYNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+						{
+							if (!countOnly)
+								addQuadToVbo(vbo, *iVertice, b, f, g, c, type); //y+
+							*iVertice += 6;
+						}
+
+						//Quatrieme QUAD (y-)
+						if (cubeYPrev == NULL ||
+							(cube->isOpaque() && !cubeYPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeYPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+						{
+							if (!countOnly)
+								addQuadToVbo(vbo, *iVertice, e, a, d, h, type); //y-
+							*iVertice += 6;
+						}
+
+						//Cinquieme QUAD (z+)
+						if (cubeZNext == NULL ||
+							(cube->isOpaque() && !cubeZNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeZNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+						{
+							if (!countOnly)
+								addQuadToVbo(vbo, *iVertice, c, g, h, d, type); //z+
+							*iVertice += 6;
+						}
+
+						//Sixième QUAD (le z-)
+						if (cubeZPrev == NULL ||
+							(cube->isOpaque() && !cubeZPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeZPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact d'un cube !=)
+						{
+							if (!countOnly)
+								addQuadToVbo(vbo, *iVertice, e, f, b, a, type); //z-
+							*iVertice += 6;
+						}
+					}
+				}
+			}
 		}
+	}
 
-		//Permet de compter les triangles ou des les ajouter aux VBO
-		void foreachVisibleTriangle(bool countOnly, int * nbVertOpaque, int * nbVertTransp, YVbo * VboOpaque, YVbo * VboTrasparent) {
-
-
-		}
 
 		/*
 		Gestion du chunk
