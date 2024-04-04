@@ -16,13 +16,16 @@ public :
     GLint ShaderPostProcess;
     GLint ShaderBirds;
 
-    MWorld* World;
+    YFbo* Fbo;
+    
 
     YVbo* SunCube;
     YColor SunColor, SkyColor;
     YVec3f SunDirection, SunPosition;
     float boostTime;
 
+    MWorld* World;
+    
     MAvatar* Avatar;
 
     //Gestion singleton
@@ -48,6 +51,10 @@ public :
     {
         YLog::log(YLog::ENGINE_INFO, "Minicraft Started : initialisation");
 
+        
+        Fbo = new YFbo(1);
+        Fbo->init(Renderer->ScreenWidth, Renderer->ScreenHeight);
+        
         Renderer->setBackgroundColor(YColor(0.0f,0.5f,1.0f,1.0f));
         Renderer->Camera->setPosition(YVec3f(10, 10, 10));
         Renderer->Camera->setLookAt(YVec3f());
@@ -83,6 +90,8 @@ public :
 
     void renderObjects()
     {
+        Fbo->setAsOutFBO(true);
+        
         glUseProgram(0);
         //Rendu des axes
         glDisable(GL_LIGHTING);
@@ -118,12 +127,41 @@ public :
         glCullFace(GL_BACK);
         glPushMatrix();
         glUseProgram(ShaderWorld);
+        Renderer->sendTimeToShader(FpsElapsed, ShaderWorld);
+        
         World->render_world_vbo(false, true);
         glPopMatrix();
+
+
+
+        //Post Process
+        Fbo->setAsOutFBO(false);
+
+        glUseProgram(ShaderPostProcess);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+        Fbo->setColorAsShaderInput(0, GL_TEXTURE0, "TexColor");
+        Fbo->setDepthAsShaderInput(GL_TEXTURE1, "TexDepth");
+        Fbo->setAsOutFBO(false);
+
+        glUseProgram(ShaderPostProcess);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+
+        Fbo->setColorAsShaderInput(0, GL_TEXTURE0, "TexColor");
+        Fbo->setDepthAsShaderInput(GL_TEXTURE1, "TexDepth");
+
+        GLuint var3 = glGetUniformLocation(ShaderPostProcess, "sky_color");
+        glUniform3f(var3, SkyColor.R, SkyColor.V, SkyColor.B);
+
+        Renderer->sendScreenSizeToShader(ShaderPostProcess);
+        Renderer->sendNearFarToShader(ShaderPostProcess);
+        Renderer->drawFullScreenQuad();
     }
 
     void resize(int width, int height)
     {
+        Fbo->resize(width, height);
     }
 
     /*INPUTS*/
@@ -140,7 +178,9 @@ public :
             Avatar->gauche = down;
         if (key == 'd' || key == 'D')
             Avatar->droite = down;
-        
+
+        if (key == 'g' || key == 'G')
+            boostTime += 10.0f;
     }
 
     void mouseWheel(int wheel, int dir, int x, int y, bool inUi)
