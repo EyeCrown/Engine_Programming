@@ -75,49 +75,49 @@ class MChunk
 	}
 
 	//Ajoute un quad du cube. Attention CCW
-	int addQuadToVbo(YVbo * vbo, int iVertice, YVec3f & a, YVec3f & b, YVec3f & c, YVec3f & d, float type) 
+	int addQuadToVbo(YVbo * vbo, int iVertice, YVec3f & a, YVec3f & b, YVec3f & c, YVec3f & d, float minUvX, float maxUvX, float minUvY, float maxUvY, float type) 
 	{
 		YVec3f normal = (b - a).cross(d - a);
 		normal.normalize();
 
 		vbo->setElementValue(0, iVertice, a.X, a.Y, a.Z);
 		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
-		vbo->setElementValue(2, iVertice, 0, 0);
+		vbo->setElementValue(2, iVertice, minUvX, minUvY);
 		vbo->setElementValue(3, iVertice, type);
 
 		iVertice++;
 
 		vbo->setElementValue(0, iVertice, b.X, b.Y, b.Z);
 		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
-		vbo->setElementValue(2, iVertice, 1, 0);
+		vbo->setElementValue(2, iVertice, maxUvX, minUvY);
 		vbo->setElementValue(3, iVertice, type);
 
 		iVertice++;
 
 		vbo->setElementValue(0, iVertice, c.X, c.Y, c.Z);
 		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
-		vbo->setElementValue(2, iVertice, 1, 1);
+		vbo->setElementValue(2, iVertice, maxUvX, maxUvY);
 		vbo->setElementValue(3, iVertice, type);
 
 		iVertice++;
 
 		vbo->setElementValue(0, iVertice, a.X, a.Y, a.Z);
 		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
-		vbo->setElementValue(2, iVertice, 0, 0);
+		vbo->setElementValue(2, iVertice, minUvX, minUvY);
 		vbo->setElementValue(3, iVertice, type);
 
 		iVertice++;
 
 		vbo->setElementValue(0, iVertice, c.X, c.Y, c.Z);
 		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
-		vbo->setElementValue(2, iVertice, 1, 1);
+		vbo->setElementValue(2, iVertice, maxUvX, maxUvY);
 		vbo->setElementValue(3, iVertice, type);
 
 		iVertice++;
 
 		vbo->setElementValue(0, iVertice, d.X, d.Y, d.Z);
 		vbo->setElementValue(1, iVertice, normal.X, normal.Y, normal.Z);
-		vbo->setElementValue(2, iVertice, 0, 1);
+		vbo->setElementValue(2, iVertice, minUvX, maxUvY);
 		vbo->setElementValue(3, iVertice, type);
 
 		iVertice++;
@@ -183,65 +183,70 @@ class MChunk
 								iVertice = nbVertOpaque;
 							vbo = VboOpaque;
 						}
-						
+						 
 						//Premier QUAD (x+)
-						if (cubeXNext == NULL ||
+						if ((cubeXNext == NULL ||
 							(cube->isOpaque() && !cubeXNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
 							(!cube->isOpaque() && cubeXNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU)
 						{
 							if (!countOnly)
-								addQuadToVbo(vbo, *iVertice, a, b, c, d, type); //x+
+								addQuadToVbo(vbo, *iVertice, a, b, c, d, 0.0f, 1.0f, 0.5f, 1.0f, type); //x+
 							*iVertice += 6;
 						}
 
 						//Second QUAD (x-)
-						if (cubeXPrev == NULL ||
+						if ((cubeXPrev == NULL ||
 							(cube->isOpaque() && !cubeXPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
 							(!cube->isOpaque() && cubeXPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU)
 						{
 							if (!countOnly)
-								addQuadToVbo(vbo, *iVertice, f, e, h, g, type); //x-
+								addQuadToVbo(vbo, *iVertice, f, e, h, g, 0.0f, 1.0f, 0.5f, 1.0f, type); //x-
 							*iVertice += 6;
 						}
 
 
 						//Troisieme QUAD (y+)
-						if (cubeYNext == NULL ||
+						if ((cubeYNext == NULL ||
 							(cube->isOpaque() && !cubeYNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
 							(!cube->isOpaque() && cubeYNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU)
 						{
 							if (!countOnly)
-								addQuadToVbo(vbo, *iVertice, b, f, g, c, type); //y+
+								addQuadToVbo(vbo, *iVertice, b, f, g, c, 0.0f, 1.0f, 0.5f, 1.0f, type); //y+
 							*iVertice += 6;
 						}
 
 						//Quatrieme QUAD (y-)
-						if (cubeYPrev == NULL ||
+						if ((cubeYPrev == NULL ||
 							(cube->isOpaque() && !cubeYPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
 							(!cube->isOpaque() && cubeYPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU)
 						{
 							if (!countOnly)
-								addQuadToVbo(vbo, *iVertice, e, a, d, h, type); //y-
+								addQuadToVbo(vbo, *iVertice, e, a, d, h, 0.0f, 1.0f, 0.5f, 1.0f, type); //y-
 							*iVertice += 6;
 						}
 
 						//Cinquieme QUAD (z+)
 						if (cubeZNext == NULL ||
 							(cube->isOpaque() && !cubeZNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
-							(!cube->isOpaque() && cubeZNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							(!cube->isOpaque() && cubeZNext->getType() != type && !cubeZNext->isOpaque())) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
 						{
 							if (!countOnly)
-								addQuadToVbo(vbo, *iVertice, c, g, h, d, type); //z+
+								addQuadToVbo(vbo, *iVertice, c, g, h, d, 0.0f, 1.0f, 0.0f, 0.5f, type); //z+
 							*iVertice += 6;
 						}
 
 						//Sixième QUAD (le z-)
-						if (cubeZPrev == NULL ||
+						if ((cubeZPrev == NULL ||
 							(cube->isOpaque() && !cubeZPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
 							(!cube->isOpaque() && cubeZPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact d'un cube !=)
+							&& cube->getType() != MCube::CUBE_EAU)
 						{
 							if (!countOnly)
-								addQuadToVbo(vbo, *iVertice, e, f, b, a, type); //z-
+								addQuadToVbo(vbo, *iVertice, e, f, b, a, 0.0f, 1.0f, 0.5f, 1.0f, type); //z-
 							*iVertice += 6;
 						}
 					}

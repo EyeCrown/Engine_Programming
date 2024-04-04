@@ -126,12 +126,10 @@ public :
 
 
         // World
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
+        
         glPushMatrix();
         glUseProgram(ShaderWorld);
-        Renderer->sendTimeToShader(FpsElapsed, ShaderWorld);
-        
+        Renderer->sendTimeToShader(DeltaTimeCumul, ShaderWorld);
         MainTexture->setAsShaderInput(ShaderWorld, GL_TEXTURE0, "myTexture");
         
         World->render_world_vbo(false, true);
@@ -141,7 +139,8 @@ public :
 
         //Post Process
         Fbo->setAsOutFBO(false);
-
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         glUseProgram(ShaderPostProcess);
         glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);

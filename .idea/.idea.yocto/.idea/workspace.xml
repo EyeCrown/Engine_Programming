@@ -10,10 +10,10 @@
   <component name="ChangeListManager">
     <list default="true" id="21c8a7c2-eb11-41df-a121-523fe9a3c056" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/src/avatar.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/avatar.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/chunk.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/chunk.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/src/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/world.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,22 +55,14 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/vector" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xstring" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/postprocess/fs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/world/vs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/world/vs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/avatar.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/world.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/world.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/engine.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/engine.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/main.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log_console.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/camera.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -84,31 +76,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultPlantUmlFileTemplate": "UML Sequence",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Sequence&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
-      "C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
-      "C:\\Users\\theoc\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\theoc\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C++ Project.minicraft">
     <configuration name="engine_test" type="CppProject" factoryName="C++ Project">
       <configuration_1>
@@ -243,7 +235,9 @@
       <workItem from="1711528506726" duration="6863000" />
       <workItem from="1712044607357" duration="3351000" />
       <workItem from="1712163285015" duration="665000" />
-      <workItem from="1712164057051" duration="5519000" />
+      <workItem from="1712164057051" duration="6000000" />
+      <workItem from="1712228244000" duration="6929000" />
+      <workItem from="1712236834055" duration="5364000" />
     </task>
     <task id="LOCAL-00001" summary="Working on day 2">
       <option name="closed" value="true" />
@@ -285,7 +279,47 @@
       <option name="project" value="LOCAL" />
       <updated>1710322268418</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Proto Camera">
+      <option name="closed" value="true" />
+      <created>1712229690028</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1712229690028</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Now run on GPU">
+      <option name="closed" value="true" />
+      <created>1712230046863</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1712230046863</updated>
+    </task>
+    <task id="LOCAL-00008" summary="World based">
+      <option name="closed" value="true" />
+      <created>1712233108643</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1712233108643</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Connect to PostProcess shader">
+      <option name="closed" value="true" />
+      <created>1712234451472</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1712234451472</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Get basic texture">
+      <option name="closed" value="true" />
+      <created>1712235349898</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1712235349898</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -312,7 +346,12 @@
     <MESSAGE value="Correction" />
     <MESSAGE value="Revert &quot;Working on day 2&quot;&#10;&#10;This reverts commit 36afdd9e" />
     <MESSAGE value="working" />
-    <option name="LAST_COMMIT_MESSAGE" value="working" />
+    <MESSAGE value="Proto Camera" />
+    <MESSAGE value="Now run on GPU" />
+    <MESSAGE value="World based" />
+    <MESSAGE value="Connect to PostProcess shader" />
+    <MESSAGE value="Get basic texture" />
+    <option name="LAST_COMMIT_MESSAGE" value="Get basic texture" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
