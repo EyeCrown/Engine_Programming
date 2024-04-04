@@ -61,10 +61,11 @@ public:
 		if (elapsed > 1.0f / 60.0f)
 			elapsed = 1.0f / 60.0f;
 
+		YVec3f force = YVec3f();
 		//Par defaut, on applique la gravité (-100 sur Z), la moitie si dans l'eau
-		YVec3f force = YVec3f(0, 0, -1) * 9.81f;
+		/*force = YVec3f(0, 0, -1) * 9.81f;
 		if (InWater)
-			force = YVec3f(0, 0, -1) * 0.5f;
+			force = YVec3f(0, 0, -1) * 0.5f;*/
 
 		float lastheight = CurrentHeight;
 		CurrentHeight = Height;
@@ -201,6 +202,31 @@ public:
 		if (Standing)
 			Speed *= pow(0.01f, elapsed);
 
+	}
+
+	void GoForward()
+	{
+		Position += Cam->Direction;
+		Cam->setPosition(Position);
+	}
+	
+	void GoBackward()
+	{
+		Position -= Cam->Direction;
+		Cam->setPosition(Position);
+	}
+
+	void GoLeft()
+	{
+		Position -= Cam->RightVec;
+		Cam->setPosition(Position);
+	}
+
+	
+	void GoRight()
+	{
+		Position += Cam->RightVec;
+		Cam->setPosition(Position);
 	}
 };
 

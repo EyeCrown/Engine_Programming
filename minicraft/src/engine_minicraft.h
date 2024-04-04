@@ -36,7 +36,7 @@ public :
     /*HANDLERS GENERAUX*/
     void loadShaders()
     {
-        //Chargement du shader (dans loadShaders() pour etre lié à F5)
+        //Chargement du shader (dans loadShaders() pour etre liï¿½ ï¿½ F5)
         ShaderCube = Renderer->createProgram("shaders/cube");
         ShaderSun = Renderer->createProgram("shaders/sun");
         ShaderWorld = Renderer->createProgram("shaders/world");
@@ -54,19 +54,18 @@ public :
 
         Avatar = new MAvatar(Renderer->Camera, World);        
 
-
         //Creation du VBO
         SunCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
-        //Définition du contenu du VBO
+        //Dï¿½finition du contenu du VBO
         SunCube->setElementDescription(0, YVbo::Element(3)); //Sommet
         SunCube->setElementDescription(1, YVbo::Element(3)); //Normale
         SunCube->setElementDescription(2, YVbo::Element(2)); //UV
-        //On demande d'allouer la mémoire coté CPU
+        //On demande d'allouer la mï¿½moire cotï¿½ CPU
         SunCube->createVboCpu();
         fillVBOCube(SunCube);
         //On envoie le contenu au GPU
         SunCube->createVboGpu();
-        //On relache la mémoire CPU
+        //On relache la mï¿½moire CPU
         SunCube->deleteVboCpu();
 
         // World
@@ -79,6 +78,7 @@ public :
     void update(float elapsed)
     {
         Renderer->Camera->update(elapsed);
+        //Avatar->update(elapsed);
     }
 
     void renderObjects()
@@ -115,7 +115,7 @@ public :
 
         // World
         glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
+        glCullFace(GL_BACK);
         glPushMatrix();
         glUseProgram(ShaderWorld);
         World->render_world_vbo(false, true);
@@ -130,7 +130,16 @@ public :
 
     void keyPressed(int key, bool special, bool down, int p1, int p2)
     {
-        //YLog::log(YLog::ENGINE_INFO, ("Key Pressed > Key " + to_string(key) + " | Special " + to_string(special) + " | Down " + to_string(down) + " | P1 " + to_string(p1) + " | P2 " + to_string(p2)).c_str());
+        YLog::log(YLog::ENGINE_INFO, ("Key Pressed > Key " + to_string(key) + " | Special " + to_string(special) + " | Down " + to_string(down) + " | P1 " + to_string(p1) + " | P2 " + to_string(p2)).c_str());
+
+        if (key == 'z' || key == 'Z')
+            Avatar->GoForward();
+        if (key == 's' || key == 'S')
+            Avatar->GoBackward();
+        if (key == 'q' || key == 'Q')
+            Avatar->GoLeft();
+        if (key == 'd' || key == 'D')
+            Avatar->GoRight();
         
     }
 
@@ -236,11 +245,11 @@ public :
         SYSTEMTIME t;
         GetLocalTime(&t);
 
-        //On borne le tweak time à une journée (cyclique)
+        //On borne le tweak time ï¿½ une journï¿½e (cyclique)
         while (boostTime > 24 * 60)
             boostTime -= 24 * 60;
 
-        //Temps écoulé depuis le début de la journée
+        //Temps ï¿½coulï¿½ depuis le dï¿½but de la journï¿½e
         float fTime = (float)(t.wHour * 60 + t.wMinute);
         fTime += boostTime;
         while (fTime > 24 * 60)
@@ -279,7 +288,7 @@ public :
         bool nuit = getSunDirFromDayTime(SunDirection, 6.0f * 60.0f, 19.0f * 60.0f, boostTime);
         SunPosition = Renderer->Camera->Position + SunDirection * 500.0f;
 
-        //Pendant la journée
+        //Pendant la journï¿½e
         if (!nuit)
         {
             //On definit la couleur
