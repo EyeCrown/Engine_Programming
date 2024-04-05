@@ -143,7 +143,10 @@ public :
 
 		srand(seed);
 
-		Perlin.setFreq(0.2f);
+		SYSTEMTIME t;
+		GetLocalTime(&t);
+		float fTime = (float)(t.wMinute * 60 + t.wSecond);
+		Perlin.setFreq(fTime);
 		
 		//Reset du monde
 		for(int x=0;x<MAT_SIZE;x++)
@@ -164,14 +167,37 @@ public :
 
 					MCube * cube = getCube(x, y, z);
 
-					if (val > 0.5f)
-						cube->setType(MCube::CUBE_HERBE);
-					if (val > 0.51f)
-						cube->setType(MCube::CUBE_TERRE);
-					if (val < 0.5 && z <= 0.1)
-						cube->setType(MCube::CUBE_EAU);
-					if (val > 0.56)
-						cube->setType(MCube::CUBE_EAU);
+					// Layer 1 - Tréfonds
+					if (z < MChunk::CHUNK_SIZE * 0.196f)
+					{
+						cube->setType(MCube::CUBE_DALLES_02);
+					// 	if (val > 0.5f)
+					// 		cube->setType(MCube::CUBE_HERBE);
+					}
+					// Layer 2 - Grotte
+					else if (z < MChunk::CHUNK_SIZE * 0.60f)
+					{
+						if (val > 0.4f)
+							cube->setType(MCube::CUBE_PIERRE);
+						if (val < 0.5 && z <= 0.1)
+							cube->setType(MCube::CUBE_EAU);
+						if (val > 0.7)
+							cube->setType(MCube::CUBE_EAU);
+					}
+					// Layer 3 - Plaine
+					else 
+					{
+						if (val > 0.5f)
+                        	cube->setType(MCube::CUBE_HERBE);
+                        if (val > 0.51f)
+                        	cube->setType(MCube::CUBE_TERRE);
+						// if (val > 0.53f)
+      //                   	cube->setType(MCube::CUBE_PIERRE);
+						if (val > 0.56)
+                         	cube->setType(MCube::CUBE_EAU);
+					}
+					
+					
 				}
 
 		for(int x=0;x<MAT_SIZE;x++)

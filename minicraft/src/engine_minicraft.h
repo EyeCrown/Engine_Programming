@@ -127,7 +127,6 @@ public :
 
 
         // World
-        
         glPushMatrix();
         glUseProgram(ShaderWorld);
         Renderer->sendTimeToShader(DeltaTimeCumul, ShaderWorld);
@@ -140,8 +139,7 @@ public :
 
         //Post Process
         Fbo->setAsOutFBO(false);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
+        
         glUseProgram(ShaderPostProcess);
         glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);

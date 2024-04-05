@@ -38,8 +38,9 @@ void main (void)
     //color.b = pow(color.b,1.0/2.2);
 
     if (type == CUBE_EAU)
+    {
         color += vec4(0.0, 0.0, 1.0, 1.0);
-
+    }
 
 	color_out = vec4(color.rgb,1.0);
 }

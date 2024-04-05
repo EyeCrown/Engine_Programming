@@ -13,7 +13,7 @@ public:
 	YPerlin()
 	{
 		Width = 41;
-		Size = Width * Width*Width;
+		Size = Width * Width * Width;
 		Gradients = new YVec3f[Size];
 		updateVecs();
 		Freq = 1;
@@ -135,7 +135,7 @@ class MPerlin : public YPerlin
 {
 	public :
 
-		float ZDecay_ZMax;
+	float ZDecay_ZMax;
 	float ZDecay_Cut;
 	bool DoPenaltyBottom;
 	bool DoPenaltyMiddle;
