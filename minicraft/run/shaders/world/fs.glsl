@@ -1,6 +1,10 @@
 #version 400
 
 uniform sampler2D myTexture;
+uniform float elapsed;
+uniform vec3 sunPos;
+uniform vec3 sunColor;
+uniform vec3 camPos;
 
 //Variables en entree
 in vec3 normal;

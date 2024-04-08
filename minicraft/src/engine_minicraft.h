@@ -58,7 +58,7 @@ public :
         Fbo->init(Renderer->ScreenWidth, Renderer->ScreenHeight);
         
         Renderer->setBackgroundColor(YColor(0.0f,0.5f,1.0f,1.0f));
-        Renderer->Camera->setPosition(YVec3f(10, 10, 10));
+        //Renderer->Camera->setPosition(YVec3f(10, 10, 10));
         Renderer->Camera->setLookAt(YVec3f());
 
         Avatar = new MAvatar(Renderer->Camera, World);        
@@ -131,6 +131,13 @@ public :
         glUseProgram(ShaderWorld);
         Renderer->sendTimeToShader(DeltaTimeCumul, ShaderWorld);
         MainTexture->setAsShaderInput(ShaderWorld, GL_TEXTURE0, "myTexture");
+
+        var = glGetUniformLocation(ShaderSun, "sunColor");
+        glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
+        var = glGetUniformLocation(ShaderSun, "sunPos");
+        glUniform3f(var, SunPosition.X, SunPosition.Y, SunPosition.Z);
+        var = glGetUniformLocation(ShaderSun, "camPos");
+        glUniform3f(var, Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
         
         World->render_world_vbo(false, true);
         glPopMatrix();
@@ -161,7 +168,7 @@ public :
         YVec3f camPos = Renderer->Camera->Position / MCube::CUBE_SIZE;
         MCube cubeCam = *World->getCube(camPos.X, camPos.Y, camPos.Z);
         MCube::MCubeType type = cubeCam.getType();
-        YLog::log(YLog::ENGINE_INFO, MCube::getName(cubeCam.getType()).c_str());
+        //YLog::log(YLog::ENGINE_INFO, MCube::getName(cubeCam.getType()).c_str());
         
         var = glGetUniformLocation(ShaderPostProcess, "type");
         glUniform1f(var, type);
@@ -181,7 +188,7 @@ public :
 
     void keyPressed(int key, bool special, bool down, int p1, int p2)
     {
-        YLog::log(YLog::ENGINE_INFO, ("Key Pressed > Key " + to_string(key) + " | Special " + to_string(special) + " | Down " + to_string(down) + " | P1 " + to_string(p1) + " | P2 " + to_string(p2)).c_str());
+        //YLog::log(YLog::ENGINE_INFO, ("Key Pressed > Key " + to_string(key) + " | Special " + to_string(special) + " | Down " + to_string(down) + " | P1 " + to_string(p1) + " | P2 " + to_string(p2)).c_str());
 
         if (key == 'z' || key == 'Z')
             Avatar->avance = down;

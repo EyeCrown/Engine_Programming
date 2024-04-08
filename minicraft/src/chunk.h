@@ -185,10 +185,10 @@ class MChunk
 						}
 						 
 						//Premier QUAD (x+)
-						if ((cubeXNext == NULL ||
-							(cube->isOpaque() && !cubeXNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
-							(!cube->isOpaque() && cubeXNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
-							&& cube->getType() != MCube::CUBE_EAU)
+						if (cubeXNext == NULL ||
+							((cube->isOpaque() && !cubeXNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeXNext->getType() != type) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU))
 						{
 							if (!countOnly)
 								addQuadToVbo(vbo, *iVertice, a, b, c, d, 0.0f, 1.0f, 0.5f, 1.0f, type); //x+
@@ -196,10 +196,10 @@ class MChunk
 						}
 
 						//Second QUAD (x-)
-						if ((cubeXPrev == NULL ||
-							(cube->isOpaque() && !cubeXPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
-							(!cube->isOpaque() && cubeXPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
-							&& cube->getType() != MCube::CUBE_EAU)
+						if (cubeXPrev == NULL ||
+							((cube->isOpaque() && !cubeXPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeXPrev->getType() != type) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU))
 						{
 							if (!countOnly)
 								addQuadToVbo(vbo, *iVertice, f, e, h, g, 0.0f, 1.0f, 0.5f, 1.0f, type); //x-
@@ -208,10 +208,10 @@ class MChunk
 
 
 						//Troisieme QUAD (y+)
-						if ((cubeYNext == NULL ||
-							(cube->isOpaque() && !cubeYNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
-							(!cube->isOpaque() && cubeYNext->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
-							&& cube->getType() != MCube::CUBE_EAU)
+						if (cubeYNext == NULL ||
+							((cube->isOpaque() && !cubeYNext->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeYNext->getType() != type) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU))
 						{
 							if (!countOnly)
 								addQuadToVbo(vbo, *iVertice, b, f, g, c, 0.0f, 1.0f, 0.5f, 1.0f, type); //y+
@@ -219,10 +219,10 @@ class MChunk
 						}
 
 						//Quatrieme QUAD (y-)
-						if ((cubeYPrev == NULL ||
-							(cube->isOpaque() && !cubeYPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
-							(!cube->isOpaque() && cubeYPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
-							&& cube->getType() != MCube::CUBE_EAU)
+						if (cubeYPrev == NULL ||
+							((cube->isOpaque() && !cubeYPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeYPrev->getType() != type) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact de l'air)
+							&& cube->getType() != MCube::CUBE_EAU))
 						{
 							if (!countOnly)
 								addQuadToVbo(vbo, *iVertice, e, a, d, h, 0.0f, 1.0f, 0.5f, 1.0f, type); //y-
@@ -240,10 +240,10 @@ class MChunk
 						}
 
 						//Sixième QUAD (le z-)
-						if ((cubeZPrev == NULL ||
-							(cube->isOpaque() && !cubeZPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
-							(!cube->isOpaque() && cubeZPrev->getType() != type)) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact d'un cube !=)
-							&& cube->getType() != MCube::CUBE_EAU)
+						if (cubeZPrev == NULL ||
+							((cube->isOpaque() && !cubeZPrev->isOpaque()) || //Je suis un cube opaque et le cube a cote de moi est transparent
+							(!cube->isOpaque() && cubeZPrev->getType() != type) //Je suis un cube transparent et le cube a cote de moi est de l'air (on rend le transparent qu'au contact d'un cube !=)
+							&& cube->getType() != MCube::CUBE_EAU))
 						{
 							if (!countOnly)
 								addQuadToVbo(vbo, *iVertice, e, f, b, a, 0.0f, 1.0f, 0.5f, 1.0f, type); //z-

@@ -156,6 +156,50 @@ public :
 
 		for (int x = 0; x < MAT_SIZE_CUBES; x++)
 			for (int y = 0; y < MAT_SIZE_CUBES; y++)
+			{
+				Perlin.DoPenaltyMiddle = true;
+                Perlin.setFreq(0.04f);
+                float val = Perlin.sample((float)x, (float)y, (float)0);
+                Perlin.DoPenaltyMiddle = false;
+                Perlin.setFreq(0.2f);
+                val -= (1.0f - max(val, Perlin.sample((float)x, (float)y, (float)0))) / 20.0f;
+                
+                int zMax = val * MAT_HEIGHT_CUBES;
+				
+				MCube * cube = getCube(x, y, zMax);
+				cube->setType(MCube::CUBE_HERBE);
+
+				// Terrain generation
+				for (int z = zMax-1; z >= 0; z--)
+				{
+					val = Perlin.sample((float)x, (float)y, (float)z);
+
+					cube = getCube(x, y, z);
+
+					if (val > 0.45f	&& val < 0.55f)
+					{
+						if (z >= MAT_HEIGHT_CUBES * 0.25f)
+							cube->setType(MCube::CUBE_TERRE);
+						if (z < MAT_HEIGHT_CUBES * 0.25f)
+							cube->setType(MCube::CUBE_PIERRE);
+						
+					}
+				}
+
+				// Water generation
+				for (int z = MAT_HEIGHT_CUBES * 0.45f; z >= zMax; z--)
+				{
+					cube = getCube(x, y, z);
+					
+					cube->setType(MCube::CUBE_EAU);
+
+					if (z == zMax)
+						cube->setType(MCube::CUBE_DALLES_04);
+
+				}
+				
+			}
+				/*
 				for (int z = 0; z < MAT_HEIGHT_CUBES; z++)
 				{
 					Perlin.DoPenaltyMiddle = true;
@@ -187,7 +231,11 @@ public :
 					// Layer 3 - Plaine
 					else 
 					{
-						if (val > 0.5f)
+						if (val > 0.45f && val  < 0.55f)
+							cube->setType(MCube::CUBE_HERBE);
+						if (val > 0.46f && val  < 0.54f)
+							cube->setType(MCube::CUBE_TERRE);
+						/*if (val > 0.5f)
                         	cube->setType(MCube::CUBE_HERBE);
                         if (val > 0.51f)
                         	cube->setType(MCube::CUBE_TERRE);
@@ -195,10 +243,13 @@ public :
       //                   	cube->setType(MCube::CUBE_PIERRE);
 						if (val > 0.56)
                          	cube->setType(MCube::CUBE_EAU);
+						if (z < MChunk::CHUNK_SIZE * 0.75f && cube->getType() == MCube::CUBE_AIR)
+							cube->setType(MCube::CUBE_EAU);
+
 					}
+				*/	
 					
-					
-				}
+		
 
 		for(int x=0;x<MAT_SIZE;x++)
 			for(int y=0;y<MAT_SIZE;y++)

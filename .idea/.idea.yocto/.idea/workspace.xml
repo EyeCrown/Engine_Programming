@@ -10,10 +10,10 @@
   <component name="ChangeListManager">
     <list default="true" id="21c8a7c2-eb11-41df-a121-523fe9a3c056" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/postprocess/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/postprocess/fs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/src/chunk.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/chunk.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/world.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/noise/perlin.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/noise/perlin.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
