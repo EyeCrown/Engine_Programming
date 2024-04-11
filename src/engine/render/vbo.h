@@ -154,6 +154,6 @@ public:
 	//Creation et copie du VBO dans la mémoire du GPU
 	void createVboGpu();
 	void render();
-
+	void renderForPoints();
 	
 };

@@ -4,8 +4,8 @@
 #include "engine/engine.h"
 
 #include "avatar.h"
+#include "bird.h"
 #include "world.h"
-
 
 class MEngineMinicraft : public YEngine
 {
@@ -30,6 +30,18 @@ public :
     
     MAvatar* Avatar;
 
+    MBird* Bird;
+    //std::list<MBird*> Birds;
+    static const int nbBirds = 20000;
+
+    MBird* Birds[nbBirds];
+    YVbo * BirdVBO;
+
+    
+    YVec3f birdsPos[10];
+    YVec3f birdDir = YVec3f(1.0f , 0.0f, 0.0f).normalize();
+
+    
     //Gestion singleton
     static YEngine* getInstance()
     {
@@ -45,23 +57,28 @@ public :
         ShaderCube = Renderer->createProgram("shaders/cube");
         ShaderSun = Renderer->createProgram("shaders/sun");
         ShaderWorld = Renderer->createProgram("shaders/world");
-        ShaderPostProcess = Renderer->createProgram("shaders/postprocess");
         ShaderBirds = Renderer->createProgram("shaders/birds");
+
+        ShaderPostProcess = Renderer->createProgram("shaders/postprocess");
     }
 
     void init()
     {
         YLog::log(YLog::ENGINE_INFO, "Minicraft Started : initialisation");
 
+        MainTexture = TexManager->getInstance()->loadTexture("atlas.png");
+        TexManager->getInstance()->loadTextureToOgl(*MainTexture);
         
         Fbo = new YFbo(1);
         Fbo->init(Renderer->ScreenWidth, Renderer->ScreenHeight);
         
         Renderer->setBackgroundColor(YColor(0.0f,0.5f,1.0f,1.0f));
-        //Renderer->Camera->setPosition(YVec3f(10, 10, 10));
         Renderer->Camera->setLookAt(YVec3f());
 
-        Avatar = new MAvatar(Renderer->Camera, World);        
+        Avatar = new MAvatar(Renderer->Camera, World);
+        Renderer->Camera->setPosition(Avatar->Position);
+
+        
 
         //Creation du VBO
         SunCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
@@ -81,14 +98,51 @@ public :
         World = new MWorld();
         World->init_world(0);
         
-        MainTexture = TexManager->getInstance()->loadTexture("atlas.png");
-        TexManager->getInstance()->loadTextureToOgl(*MainTexture);
+        
+
+        // Bird
+        
+        BirdVBO = new YVbo(2, nbBirds, YVbo::PACK_BY_ELEMENT_TYPE);
+        BirdVBO->setElementDescription(0, YVbo::Element(3)); // Position
+        BirdVBO->setElementDescription(1, YVbo::Element(3)); // Direction
+        BirdVBO->createVboCpu();
+        
+        YVec3f birdSpawnPos = YVec3f(((MWorld::MAT_SIZE_METERS) / 2), ((MWorld::MAT_SIZE_METERS) / 2), (MWorld::MAT_HEIGHT_METERS));
+        
+        for (int i = 0; i < nbBirds; i++)
+        {
+            YVec3f position = YVec3f(birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.Z);
+            YVec3f direction = YVec3f(1.0, 0.0, 0.0);
+            
+            MBird* bird = new MBird(position, direction);
+            
+            Birds[i] = bird;
+
+            BirdVBO->setElementValue(0, i, Birds[i]->Position.X, Birds[i]->Position.Y, Birds[i]->Position.Z);
+            BirdVBO->setElementValue(1, i, Birds[i]->Direction.X, Birds[i]->Direction.Y, Birds[i]->Direction.Z);
+        }
+        BirdVBO->createVboGpu();
+        //BirdVBO->deleteVboCpu();
+        
     }
     
     void update(float elapsed)
     {
         Renderer->Camera->update(elapsed);
         Avatar->update(elapsed);
+        //Bird->Update(elapsed);
+
+        
+
+        for (int i = 0; i < nbBirds; i++)
+        {
+            Birds[i]->Update(elapsed);
+            
+            BirdVBO->setElementValue(0, i, Birds[i]->Position.X, Birds[i]->Position.Y, Birds[i]->Position.Z);
+            BirdVBO->setElementValue(1, i, Birds[i]->Direction.X, Birds[i]->Direction.Y, Birds[i]->Direction.Z);
+            
+        }
+        BirdVBO->createVboGpu();
     }
 
     void renderObjects()
@@ -143,26 +197,38 @@ public :
         glPopMatrix();
 
 
+        // Bird
+        glPushMatrix();
+        glUseProgram(ShaderBirds);
+
+        var = glGetUniformLocation(ShaderBirds, "birdPosition");
+        //glUniform3f(var, birdPos.X, birdPos.Y, birdPos.Z);
+        
+        Renderer->updateMatricesFromOgl();
+        Renderer->sendMatricesToShader(ShaderBirds);
+        Renderer->sendTimeToShader(DeltaTimeCumul, ShaderBirds);
+        BirdVBO->renderForPoints();
+        glPopMatrix();
+
 
         //Post Process
         Fbo->setAsOutFBO(false);
+
+        glUseProgram(ShaderPostProcess);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+        Fbo->setColorAsShaderInput(0, GL_TEXTURE2, "TexColor");
+        Fbo->setDepthAsShaderInput(GL_TEXTURE3, "TexDepth");
+
+        // var = glGetUniformLocation(ShaderPostProcess, "sky_color");
+        // glUniform3f(var, SkyColor.R, SkyColor.V, SkyColor.B);
         
-        glUseProgram(ShaderPostProcess);
-        glDisable(GL_CULL_FACE);
-        glDisable(GL_DEPTH_TEST);
-        Fbo->setColorAsShaderInput(0, GL_TEXTURE0, "TexColor");
-        Fbo->setDepthAsShaderInput(GL_TEXTURE1, "TexDepth");
-        Fbo->setAsOutFBO(false);
-
-        glUseProgram(ShaderPostProcess);
-        glDisable(GL_CULL_FACE);
-        glDisable(GL_DEPTH_TEST);
-
-        Fbo->setColorAsShaderInput(0, GL_TEXTURE0, "TexColor");
-        Fbo->setDepthAsShaderInput(GL_TEXTURE1, "TexDepth");
-
-        var = glGetUniformLocation(ShaderPostProcess, "sky_color");
-        glUniform3f(var, SkyColor.R, SkyColor.V, SkyColor.B);
+        // var = glGetUniformLocation(ShaderSun, "sunColor");
+        // glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
+        // var = glGetUniformLocation(ShaderSun, "sunPos");
+        // glUniform3f(var, SunPosition.X, SunPosition.Y, SunPosition.Z);
+        // var = glGetUniformLocation(ShaderSun, "camPos");
+        // glUniform3f(var, Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
 
         // Type of cube where avatar head is
         YVec3f camPos = Renderer->Camera->Position / MCube::CUBE_SIZE;
@@ -173,7 +239,7 @@ public :
         var = glGetUniformLocation(ShaderPostProcess, "type");
         glUniform1f(var, type);
         
-        
+        //Renderer->sendTimeToShader(DeltaTimeCumul, ShaderPostProcess);
         Renderer->sendScreenSizeToShader(ShaderPostProcess);
         Renderer->sendNearFarToShader(ShaderPostProcess);
         Renderer->drawFullScreenQuad();

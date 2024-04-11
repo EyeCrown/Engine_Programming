@@ -22,6 +22,7 @@
     <ClInclude Include="..\src\engine\noise\perlin.h" />
     <ClInclude Include="..\src\engine\render\camera.h" />
     <ClInclude Include="src\avatar.h" />
+    <ClInclude Include="src\bird.h" />
     <ClInclude Include="src\chunk.h" />
     <ClInclude Include="src\cube.h" />
     <ClInclude Include="src\engine_minicraft.h" />
@@ -47,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="run\atlas.png" />
+    <Content Include="run\shaders\birds\gs.glsl" />
+    <Content Include="run\shaders\postprocess\vs.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

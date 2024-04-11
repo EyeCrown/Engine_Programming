@@ -199,57 +199,6 @@ public :
 				}
 				
 			}
-				/*
-				for (int z = 0; z < MAT_HEIGHT_CUBES; z++)
-				{
-					Perlin.DoPenaltyMiddle = true;
-					Perlin.setFreq(0.04f);
-					float val = Perlin.sample((float)x, (float)y, (float)z);
-					Perlin.DoPenaltyMiddle = false;
-					Perlin.setFreq(0.2f);
-					val -= (1.0f - max(val, Perlin.sample((float)x, (float)y, (float)z))) / 20.0f;
-
-					MCube * cube = getCube(x, y, z);
-
-					// Layer 1 - Tréfonds
-					if (z < MChunk::CHUNK_SIZE * 0.196f)
-					{
-						cube->setType(MCube::CUBE_DALLES_02);
-					// 	if (val > 0.5f)
-					// 		cube->setType(MCube::CUBE_HERBE);
-					}
-					// Layer 2 - Grotte
-					else if (z < MChunk::CHUNK_SIZE * 0.60f)
-					{
-						if (val > 0.4f)
-							cube->setType(MCube::CUBE_PIERRE);
-						if (val < 0.5 && z <= 0.1)
-							cube->setType(MCube::CUBE_EAU);
-						if (val > 0.7)
-							cube->setType(MCube::CUBE_EAU);
-					}
-					// Layer 3 - Plaine
-					else 
-					{
-						if (val > 0.45f && val  < 0.55f)
-							cube->setType(MCube::CUBE_HERBE);
-						if (val > 0.46f && val  < 0.54f)
-							cube->setType(MCube::CUBE_TERRE);
-						/*if (val > 0.5f)
-                        	cube->setType(MCube::CUBE_HERBE);
-                        if (val > 0.51f)
-                        	cube->setType(MCube::CUBE_TERRE);
-						// if (val > 0.53f)
-      //                   	cube->setType(MCube::CUBE_PIERRE);
-						if (val > 0.56)
-                         	cube->setType(MCube::CUBE_EAU);
-						if (z < MChunk::CHUNK_SIZE * 0.75f && cube->getType() == MCube::CUBE_AIR)
-							cube->setType(MCube::CUBE_EAU);
-
-					}
-				*/	
-					
-		
 
 		for(int x=0;x<MAT_SIZE;x++)
 			for(int y=0;y<MAT_SIZE;y++)

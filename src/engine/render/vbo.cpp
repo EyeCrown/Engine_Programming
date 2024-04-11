@@ -57,3 +57,27 @@ void YVbo::render() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
+
+void YVbo::renderForPoints()
+{
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	for (int i = 0; i<NbElements; i++)
+		glEnableVertexAttribArray(i);
+
+	if (StorageMethod == PACK_BY_ELEMENT_TYPE) {
+		for (int i = 0; i<NbElements; i++)
+			glVertexAttribPointer(i, Elements[i].NbFloats, GL_FLOAT, GL_FALSE, 0, (void*)(Elements[i].OffsetFloats * sizeof(float)));
+	} else {
+		for (int i = 0; i<NbElements; i++)
+			glVertexAttribPointer(i, Elements[i].NbFloats, GL_FLOAT, GL_FALSE, TotalNbFloatForOneVertice * sizeof(float), (void*)(Elements[i].OffsetFloats * sizeof(float)));
+	}
+	
+	YEngine::Instance->TimerGPURender.startAccumPeriod();
+	glDrawArrays(GL_POINTS, 0, NbVertices);
+	YEngine::Instance->TimerGPURender.endAccumPeriod();
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
