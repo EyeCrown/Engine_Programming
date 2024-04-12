@@ -35,35 +35,34 @@ void CreateTriangle(vec3 a, vec3 b, vec3 c, vec4 aColor, vec4 bColor, vec4 cColo
 void main(){
     // gl_in[0].gl_Position
     // I need vec direction, right, up
-    vec3 one =   vec3( 0,-0.5,-0.5);    // botLeft
-    vec3 two =   vec3( 0, 0.5,-0.5);    // botRight
-    vec3 three = vec3( 0,-0.5, 0.5);    // topLeft
-    vec3 four =  vec3( 0, 0.5, 0.5);    // topRight
-    vec3 five =  vec3( 1, 0, 0);        // direction
+         
     //vec3 five =  vec3(direction[0].xyz);
     
     vec3 up = normalize(vec3(0, 0, 1));
     vec3 right = normalize(cross(direction[0].xyz, up));
+    up = normalize(cross( right, direction[0].xyz));
+    float scale = 0.2;
+    float length = 1;
     
-    one   = -right - up;
-    two   =  right - up;
-    three = -right + up;
-    four  =  right + up;
-    five  = normalize(direction[0].xyz); 
+    vec3 one   = normalize(-right - up) * scale;    // botLeft
+    vec3 two   = normalize( right - up) * scale;    // botRight
+    vec3 three = normalize(-right + up) * scale;    // topLeft
+    vec3 four  = normalize( right + up) * scale;    // topRight
+    vec3 five  = normalize(direction[0].xyz);    // direction
     
     vec4 black = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 orange = vec4(1.0, 0.5, 0.0, 1.0);
     vec4 yellow = vec4(1.0, 1.0, 0.0, 1.0);
     
-    CreateTriangle(two, three, four, black, black, orange);
+    CreateTriangle(two, three, four, black, black, orange);         // 2,3,4
     
-    CreateTriangle(three, four, five, black, orange, orange);
-    CreateTriangle(four, five, two, orange, yellow, black);
-    CreateTriangle(five, two, one, yellow, black, black);
+    CreateTriangle(three, four, five, black, orange, orange);       // 3,4,5
+    CreateTriangle(four, five, two, orange, yellow, black);         // 4,5,2
+    CreateTriangle(five, two, one, yellow, black, black);           // 5,2,1
     
-    CreateTriangle(two, one, three, black, black, black);
+    CreateTriangle(two, one, three, black, black, black);           // 2,1,3
     
-    CreateTriangle(one, three, five, black, black, yellow);
+    CreateTriangle(one, three, five, black, black, yellow);         // 1,3,5
     
     EndPrimitive();
     
