@@ -9,18 +9,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c8a7c2-eb11-41df-a121-523fe9a3c056" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/minicraft/run/2024_4_11_18_6_13_784.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/minicraft/run/shaders/birds/gs.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/minicraft/src/bird.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/minicraft.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/minicraft.vcxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/birds/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/birds/fs.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/birds/vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/birds/vs.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/postprocess/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/postprocess/fs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/birds/gs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/birds/gs.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/src/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/world.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/render/vbo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/render/vbo.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/render/vbo.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/render/vbo.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,10 +61,18 @@
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/vector" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xmemory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xstring" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/fs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/vs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/postprocess/fs.glsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/postprocess/fs.glsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/world.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log_console.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/vbo.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/vbo.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/external/gl/glew.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -255,7 +254,8 @@
       <workItem from="1712734316077" duration="3598000" />
       <workItem from="1712751868140" duration="11713000" />
       <workItem from="1712839728374" duration="4841000" />
-      <workItem from="1712845976083" duration="5340000" />
+      <workItem from="1712845976083" duration="5854000" />
+      <workItem from="1712906282102" duration="6181000" />
     </task>
     <task id="LOCAL-00001" summary="Working on day 2">
       <option name="closed" value="true" />
@@ -377,7 +377,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712734595901</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Ils sont légion !">
+      <option name="closed" value="true" />
+      <created>1712852343070</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1712852343070</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -414,7 +422,8 @@
     <MESSAGE value="Add screenshots" />
     <MESSAGE value="World generation update" />
     <MESSAGE value="Petite icone pour le style ! + screenshot" />
-    <option name="LAST_COMMIT_MESSAGE" value="Petite icone pour le style ! + screenshot" />
+    <MESSAGE value="Ils sont légion !" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ils sont légion !" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

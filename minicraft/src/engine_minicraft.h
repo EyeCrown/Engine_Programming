@@ -31,8 +31,8 @@ public :
     MAvatar* Avatar;
 
     MBird* Bird;
-    //std::list<MBird*> Birds;
-    static const int nbBirds = 20000;
+    
+    static const int nbBirds = 200;
 
     MBird* Birds[nbBirds];
     YVbo * BirdVBO;
@@ -112,8 +112,8 @@ public :
         for (int i = 0; i < nbBirds; i++)
         {
             YVec3f position = YVec3f(birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.Z);
-            YVec3f direction = YVec3f(1.0, 0.0, 0.0);
-            
+            YVec3f direction = YVec3f(randf(), randf(), 0.0);
+            direction.normalize();
             MBird* bird = new MBird(position, direction);
             
             Birds[i] = bird;
@@ -142,7 +142,7 @@ public :
             BirdVBO->setElementValue(1, i, Birds[i]->Direction.X, Birds[i]->Direction.Y, Birds[i]->Direction.Z);
             
         }
-        BirdVBO->createVboGpu();
+        //BirdVBO->createVboGpu();
     }
 
     void renderObjects()
