@@ -32,7 +32,7 @@ public :
 
     MBird* Bird;
     
-    static const int nbBirds = 200;
+    static const int nbBirds = 20000;
 
     MBird* Birds[nbBirds];
     YVbo * BirdVBO;
@@ -112,7 +112,7 @@ public :
         for (int i = 0; i < nbBirds; i++)
         {
             YVec3f position = YVec3f(birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.Z);
-            YVec3f direction = YVec3f(randf(), randf(), 0.0);
+            YVec3f direction = YVec3f(randf(), randf(), randf());
             direction.normalize();
             MBird* bird = new MBird(position, direction);
             
@@ -142,7 +142,7 @@ public :
             BirdVBO->setElementValue(1, i, Birds[i]->Direction.X, Birds[i]->Direction.Y, Birds[i]->Direction.Z);
             
         }
-        //BirdVBO->createVboGpu();
+        BirdVBO->createVboGpu();
     }
 
     void renderObjects()
@@ -186,11 +186,11 @@ public :
         Renderer->sendTimeToShader(DeltaTimeCumul, ShaderWorld);
         MainTexture->setAsShaderInput(ShaderWorld, GL_TEXTURE0, "myTexture");
 
-        var = glGetUniformLocation(ShaderSun, "sunColor");
+        var = glGetUniformLocation(ShaderWorld, "sunColor");
         glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
-        var = glGetUniformLocation(ShaderSun, "sunPos");
+        var = glGetUniformLocation(ShaderWorld, "sunPos");
         glUniform3f(var, SunPosition.X, SunPosition.Y, SunPosition.Z);
-        var = glGetUniformLocation(ShaderSun, "camPos");
+        var = glGetUniformLocation(ShaderWorld, "camPos");
         glUniform3f(var, Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
         
         World->render_world_vbo(false, true);

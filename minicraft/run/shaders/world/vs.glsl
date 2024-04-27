@@ -26,7 +26,7 @@ out float type;
 
 float noise(vec4 position, float variator, float offset)
 {
-    return 0.25f * sin(position.x / 3 + variator) 
+    return 0.5f * sin(position.x / 3 + variator) 
     + 0.05f * sin((position.y+position.x) + variator) 
     + offset;
 }
@@ -42,7 +42,7 @@ void main()
 	uv = vs_uv_in;
     type = vs_type_in;
 	//Couleur par défaut violet
-	color = vec4(1.0,1.0,0.0,1.0);
+	color = vec4(1.0,1.0,1.0,1.0);
 
 	//Couleur fonction du type
 	if(vs_type_in == CUBE_HERBE)
@@ -55,8 +55,10 @@ void main()
 	}
 	if(vs_type_in == CUBE_EAU)
 	{
-		color = vec4(0.0,0.0,1.0,0.7);	
+		color = vec4(0.0,0.0,1.0,1.0);	
+		//color.a = 0.8;	
 		wPos.z += noise(wPos, elapsed, -0.5);
+		//type = 22;
     }
     
     gl_Position = p * v * wPos;

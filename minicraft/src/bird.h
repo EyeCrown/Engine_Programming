@@ -28,7 +28,7 @@ public:
 
     void UpdateDirection(float elapsed)
     {
-        Direction += YVec3f(randf() * elapsed, randf() * elapsed, randf() * elapsed);
+        Direction += YVec3f(randf() * elapsed, randf() * elapsed, 0 * elapsed);
         Direction.normalize();
     }
     

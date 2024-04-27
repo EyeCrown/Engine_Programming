@@ -10,8 +10,11 @@
   <component name="ChangeListManager">
     <list default="true" id="21c8a7c2-eb11-41df-a121-523fe9a3c056" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/birds/gs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/birds/gs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/src/bird.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/bird.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/engine/render/vbo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/render/vbo.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,28 +54,18 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/ostream" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/sstream" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/type_traits" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/vector" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xmemory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xstring" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/fs.glsl" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/vs.glsl" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/postprocess/fs.glsl" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/postprocess/fs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/gs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/gs.glsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/world.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log_console.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/vbo.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/src/engine/render/vbo.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/external/gl/glew.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -255,7 +248,11 @@
       <workItem from="1712751868140" duration="11713000" />
       <workItem from="1712839728374" duration="4841000" />
       <workItem from="1712845976083" duration="5854000" />
-      <workItem from="1712906282102" duration="6181000" />
+      <workItem from="1712906282102" duration="8692000" />
+      <workItem from="1713817992054" duration="4728000" />
+      <workItem from="1714080183577" duration="3343000" />
+      <workItem from="1714214358163" duration="5213000" />
+      <workItem from="1714225413761" duration="2397000" />
     </task>
     <task id="LOCAL-00001" summary="Working on day 2">
       <option name="closed" value="true" />
@@ -385,7 +382,23 @@
       <option name="project" value="LOCAL" />
       <updated>1712852343070</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Finally some good birds !">
+      <option name="closed" value="true" />
+      <created>1712915299230</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1712915299230</updated>
+    </task>
+    <task id="LOCAL-00018" summary="ça à de la gueule les piafs">
+      <option name="closed" value="true" />
+      <created>1712915907110</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1712915907110</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -423,7 +436,9 @@
     <MESSAGE value="World generation update" />
     <MESSAGE value="Petite icone pour le style ! + screenshot" />
     <MESSAGE value="Ils sont légion !" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ils sont légion !" />
+    <MESSAGE value="Finally some good birds !" />
+    <MESSAGE value="ça à de la gueule les piafs" />
+    <option name="LAST_COMMIT_MESSAGE" value="ça à de la gueule les piafs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
