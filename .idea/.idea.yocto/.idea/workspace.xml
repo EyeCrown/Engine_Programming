@@ -8,13 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21c8a7c2-eb11-41df-a121-523fe9a3c056" name="Changes" comment="">
+    <list default="true" id="21c8a7c2-eb11-41df-a121-523fe9a3c056" name="Changes" comment="Specular is back from the dead">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/bird.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/bird.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/render/vbo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/render/vbo.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,15 +51,21 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/ostream" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/sstream" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/type_traits" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/vector" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xmemory" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xstring" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/gs.glsl" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/run/shaders/birds/gs.glsl" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/bird.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Moteur/yocto/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log_console.h" root0="SKIP_HIGHLIGHTING" />
@@ -252,7 +255,7 @@
       <workItem from="1713817992054" duration="4728000" />
       <workItem from="1714080183577" duration="3343000" />
       <workItem from="1714214358163" duration="5213000" />
-      <workItem from="1714225413761" duration="2397000" />
+      <workItem from="1714225413761" duration="4712000" />
     </task>
     <task id="LOCAL-00001" summary="Working on day 2">
       <option name="closed" value="true" />
@@ -398,7 +401,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712915907110</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Specular is back from the dead">
+      <option name="closed" value="true" />
+      <created>1714227959969</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1714227959969</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,7 +449,8 @@
     <MESSAGE value="Ils sont légion !" />
     <MESSAGE value="Finally some good birds !" />
     <MESSAGE value="ça à de la gueule les piafs" />
-    <option name="LAST_COMMIT_MESSAGE" value="ça à de la gueule les piafs" />
+    <MESSAGE value="Specular is back from the dead" />
+    <option name="LAST_COMMIT_MESSAGE" value="Specular is back from the dead" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

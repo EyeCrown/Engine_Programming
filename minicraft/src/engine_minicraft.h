@@ -32,14 +32,13 @@ public :
 
     MBird* Bird;
     
-    static const int nbBirds = 20000;
+    static const int nbBirds = 30000;
 
     MBird* Birds[nbBirds];
     YVbo * BirdVBO;
 
     
     YVec3f birdsPos[10];
-    YVec3f birdDir = YVec3f(1.0f , 0.0f, 0.0f).normalize();
 
     
     //Gestion singleton
@@ -111,13 +110,16 @@ public :
         
         for (int i = 0; i < nbBirds; i++)
         {
-            YVec3f position = YVec3f(birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.Z);
-            YVec3f direction = YVec3f(randf(), randf(), randf());
+            YVec3f position = YVec3f(birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.X + randf() * 20 - 10, birdSpawnPos.Z + fmod(randf(), 20.0f));
+            float x = fmod(randf(), 2.0f) - 0.5f;
+            float y = fmod(randf(), 2.0f) - 0.5f;
+            float z = 0;//fmod(randf(), 1.0f);
+            YVec3f direction = YVec3f(x, y, z);
             direction.normalize();
             MBird* bird = new MBird(position, direction);
             
             Birds[i] = bird;
-
+            
             BirdVBO->setElementValue(0, i, Birds[i]->Position.X, Birds[i]->Position.Y, Birds[i]->Position.Z);
             BirdVBO->setElementValue(1, i, Birds[i]->Direction.X, Birds[i]->Direction.Y, Birds[i]->Direction.Z);
         }
