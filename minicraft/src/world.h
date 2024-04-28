@@ -168,7 +168,7 @@ public :
 				
 				MCube * cube = getCube(x, y, zMax);
 				cube->setType(MCube::CUBE_HERBE);
-
+				
 				// Terrain generation
 				for (int z = zMax-1; z >= 0; z--)
 				{
@@ -190,12 +190,28 @@ public :
 				for (int z = MAT_HEIGHT_CUBES * 0.45f; z >= zMax; z--)
 				{
 					cube = getCube(x, y, z);
-					
 					cube->setType(MCube::CUBE_EAU);
 
 					if (z == zMax)
 						cube->setType(MCube::CUBE_DALLES_04);
+				}
 
+				if (rand() % 100 < 1 && zMax > MAT_HEIGHT_CUBES * 0.45f)
+				{
+					int sizeTree = 5;
+					for (int k=1; k<5; k++)
+					{
+						getCube(x, y, zMax+k)->setType(MCube::CUBE_BOIS);
+
+						if (k > sizeTree/2)
+							for (int i=-1; i<=1; i++)
+								for (int j=-1; j<=1; j++)
+								{
+									if (!(i == 0 && j == 0))
+										getCube(x+i, y+j, zMax+k)->setType(MCube::CUBE_BRANCHES);
+								}	
+					}					
+					getCube(x, y, zMax+sizeTree)->setType(MCube::CUBE_BRANCHES);
 				}
 				
 			}
