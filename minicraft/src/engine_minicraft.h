@@ -44,7 +44,7 @@ public :
     
     YVec3f birdsPos[10];
 
-    YVec3f skyboxVertices[] =
+    YVec3f skyboxVertices[8] =
     {
         YVec3f(-1.0f, -1.0f,  1.0f),
         YVec3f( 1.0f, -1.0f,  1.0f),
@@ -109,14 +109,14 @@ public :
         SunCube->deleteVboCpu();
 
 
-        SkyCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
+        /*SkyCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
         SkyCube->setElementDescription(0, YVbo::Element(3)); //Sommet
         SkyCube->setElementDescription(1, YVbo::Element(3)); //Normale
         SkyCube->setElementDescription(2, YVbo::Element(2)); //UV
         SkyCube->createVboCpu();
         fillVBOCube(SkyCube);
         SkyCube->createVboGpu();
-        SkyCube->deleteVboCpu();
+        SkyCube->deleteVboCpu();*/
         
 
         // World
@@ -194,14 +194,14 @@ public :
         GLuint var;
 
         // Skybox
-        glPushMatrix();
+        /*glPushMatrix();
         glUseProgram(ShaderSkybox);
         glTranslatef(Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
         glScalef(175, 175, 175);
         Renderer->updateMatricesFromOgl();
         Renderer->sendMatricesToShader(ShaderSkybox);
         SkyCube->render();
-        glPopMatrix();
+        glPopMatrix();*/
         
 
         // Sun
@@ -258,8 +258,8 @@ public :
         Fbo->setColorAsShaderInput(0, GL_TEXTURE2, "TexColor");
         Fbo->setDepthAsShaderInput(GL_TEXTURE3, "TexDepth");
 
-        // var = glGetUniformLocation(ShaderPostProcess, "sky_color");
-        // glUniform3f(var, SkyColor.R, SkyColor.V, SkyColor.B);
+        var = glGetUniformLocation(ShaderPostProcess, "skyColor");
+        glUniform3f(var, SkyColor.R, SkyColor.V, SkyColor.B);
         
         // var = glGetUniformLocation(ShaderSun, "sunColor");
         // glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
@@ -277,7 +277,7 @@ public :
         var = glGetUniformLocation(ShaderPostProcess, "type");
         glUniform1f(var, type);
         
-        //Renderer->sendTimeToShader(DeltaTimeCumul, ShaderPostProcess);
+        Renderer->sendTimeToShader(DeltaTimeCumul, ShaderPostProcess);
         Renderer->sendScreenSizeToShader(ShaderPostProcess);
         Renderer->sendNearFarToShader(ShaderPostProcess);
         Renderer->drawFullScreenQuad();
