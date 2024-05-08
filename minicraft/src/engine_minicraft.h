@@ -1,7 +1,7 @@
 #ifndef __YOCTO__ENGINE_TEST__
 #define __YOCTO__ENGINE_TEST__
 
-#include "engine/engine.h"
+#include "../../src/engine/engine.h"
 
 #include "avatar.h"
 #include "bird.h"
@@ -11,6 +11,7 @@ class MEngineMinicraft : public YEngine
 {
 public :
     GLint ShaderCube;
+    GLint ShaderSkybox;
     GLint ShaderSun;
     GLint ShaderWorld;
     GLint ShaderPostProcess;
@@ -26,6 +27,9 @@ public :
     YVec3f SunDirection, SunPosition;
     float boostTime;
 
+    YVbo* SkyCube;
+    
+
     MWorld* World;
     
     MAvatar* Avatar;
@@ -40,6 +44,18 @@ public :
     
     YVec3f birdsPos[10];
 
+    YVec3f skyboxVertices[] =
+    {
+        YVec3f(-1.0f, -1.0f,  1.0f),
+        YVec3f( 1.0f, -1.0f,  1.0f),
+        YVec3f( 1.0f, -1.0f, -1.0f),
+        YVec3f(-1.0f, -1.0f, -1.0f),
+        
+        YVec3f(-1.0f,  1.0f,  1.0f),
+        YVec3f( 1.0f,  1.0f,  1.0f),
+        YVec3f( 1.0f,  1.0f, -1.0f),
+        YVec3f(-1.0f,  1.0f, -1.0f),
+    };
     
     //Gestion singleton
     static YEngine* getInstance()
@@ -54,6 +70,7 @@ public :
     {
         //Chargement du shader (dans loadShaders() pour etre li� � F5)
         ShaderCube = Renderer->createProgram("shaders/cube");
+        ShaderSkybox = Renderer->createProgram("shaders/skybox");
         ShaderSun = Renderer->createProgram("shaders/sun");
         ShaderWorld = Renderer->createProgram("shaders/world");
         ShaderBirds = Renderer->createProgram("shaders/birds");
@@ -77,8 +94,6 @@ public :
         Avatar = new MAvatar(Renderer->Camera, World);
         Renderer->Camera->setPosition(Avatar->Position);
 
-        
-
         //Creation du VBO
         SunCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
         //D�finition du contenu du VBO
@@ -93,6 +108,17 @@ public :
         //On relache la m�moire CPU
         SunCube->deleteVboCpu();
 
+
+        SkyCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
+        SkyCube->setElementDescription(0, YVbo::Element(3)); //Sommet
+        SkyCube->setElementDescription(1, YVbo::Element(3)); //Normale
+        SkyCube->setElementDescription(2, YVbo::Element(2)); //UV
+        SkyCube->createVboCpu();
+        fillVBOCube(SkyCube);
+        SkyCube->createVboGpu();
+        SkyCube->deleteVboCpu();
+        
+
         // World
         World = new MWorld();
         World->init_world(0);
@@ -100,7 +126,6 @@ public :
         
 
         // Bird
-        
         BirdVBO = new YVbo(2, nbBirds, YVbo::PACK_BY_ELEMENT_TYPE);
         BirdVBO->setElementDescription(0, YVbo::Element(3)); // Position
         BirdVBO->setElementDescription(1, YVbo::Element(3)); // Direction
@@ -167,6 +192,17 @@ public :
         glEnd();
 
         GLuint var;
+
+        // Skybox
+        glPushMatrix();
+        glUseProgram(ShaderSkybox);
+        glTranslatef(Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
+        glScalef(175, 175, 175);
+        Renderer->updateMatricesFromOgl();
+        Renderer->sendMatricesToShader(ShaderSkybox);
+        SkyCube->render();
+        glPopMatrix();
+        
 
         // Sun
         updateLights(boostTime);

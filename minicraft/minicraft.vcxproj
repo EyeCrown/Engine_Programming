@@ -50,6 +50,7 @@
     <Content Include="run\atlas.png" />
     <Content Include="run\shaders\birds\gs.glsl" />
     <Content Include="run\shaders\postprocess\vs.glsl" />
+    <Content Include="run\shaders\skybox\fs.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

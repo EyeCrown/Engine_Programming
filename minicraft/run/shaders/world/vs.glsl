@@ -22,6 +22,7 @@ out float type;
 #define CUBE_HERBE 0.0
 #define CUBE_TERRE 1.0
 #define CUBE_EAU 4.0
+#define CUBE_BRANCHES 38.0
 
 
 float noise(vec4 position, float variator, float offset)
@@ -59,6 +60,11 @@ void main()
 		//color.a = 0.8;	
 		wPos.z += noise(wPos, elapsed, -0.5);
 		//type = 22;
+    }
+    if(vs_type_in == CUBE_BRANCHES)
+    {
+        wPos.x += noise(wPos, elapsed * 10, 0.0);
+        wPos.y -= noise(wPos, elapsed * 10, 0.0);
     }
     
     gl_Position = p * v * wPos;

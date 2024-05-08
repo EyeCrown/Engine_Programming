@@ -3,6 +3,7 @@
 #define CUBE_HERBE 0.0
 #define CUBE_TERRE 1.0
 #define CUBE_EAU 4.0
+#define CUBE_BRANCHES 38.0
 
 uniform sampler2D myTexture;
 uniform float elapsed;
@@ -55,7 +56,7 @@ void main()
         specular  = pow(abs(angle),300)*50;
     }
 
-    float diffuse = max(0, dot(newNorm, toLight)) * 3;
+    float diffuse = max(0, dot(newNorm, toLight));
     
     
     //color_out =  texture(myTexture, realUv) * vec4(1.0);

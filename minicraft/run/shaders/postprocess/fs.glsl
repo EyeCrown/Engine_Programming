@@ -2,6 +2,7 @@
 
 in vec2 uv;
 
+uniform float elapsed;
 uniform sampler2D TexColor;
 uniform sampler2D TexDepth;
 uniform float screen_width;
@@ -26,21 +27,33 @@ void main (void)
 	float ystep = 1.0/screen_height;
 	float ratio = screen_width / screen_height;
 
-	vec4 color = texture2D( TexColor , uv );
+    vec2 realUv = uv;
+
+	//vec4 color = texture2D( TexColor , uv );
 	float depth = texture2D( TexDepth , uv ).r;	
 	
 	//Permet de scaler la profondeur
 	depth = LinearizeDepth(depth);
 
-    //Gamma correction
+        //Gamma correction
     //color.r = pow(color.r,1.0/2.2);
     //color.g = pow(color.g,1.0/2.2);
     //color.b = pow(color.b,1.0/2.2);
 
     if (type == CUBE_EAU)
     {
+        //color += vec4(0.0, 0.0, 1.0, 1.0);
+        realUv.y = sin(uv.y * elapsed);
+        
+    }
+    vec4 color = texture2D( TexColor , realUv );
+
+
+    if (type == CUBE_EAU)
+    {
         color += vec4(0.0, 0.0, 1.0, 1.0);
     }
+    //color += depth * 1;
 
 	color_out = vec4(color.rgb,1.0);
 }

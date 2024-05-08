@@ -68,7 +68,7 @@ uint32 getFileSize(const char* name);
 uint16 fgetu16(FILE * fe);
 uint32 fgetu32(FILE * fe);
 
-bool isPowerOfTwo(uint32 value);
+bool isPowerOfTwo(uint16 value);
 
 unsigned long getMemoryUsage(void);
 

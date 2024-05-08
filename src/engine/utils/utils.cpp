@@ -72,7 +72,7 @@ uint32 fgetu32 (FILE * fe)
 }
 
 
-bool isPowerOfTwo(uint32 value)
+bool isPowerOfTwo(uint16 value)
 {
 	uint16 count = 0;
 	while(value)
