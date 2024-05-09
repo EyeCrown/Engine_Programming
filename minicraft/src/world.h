@@ -1,6 +1,8 @@
 #ifndef __WORLD_H__
 #define __WORLD_H__
 
+#include <thread>
+
 #include "external/gl/glew.h"
 #include "external/gl/freeglut.h" 
 #include "engine/utils/types_3d.h"
@@ -17,7 +19,7 @@ public :
 	static const int AXIS_Z = 0b00000100;
 
 	#ifdef _DEBUG
-	static const int MAT_SIZE = 1; //en nombre de chunks
+	static const int MAT_SIZE = 4; //en nombre de chunks
 	#else
 	static const int MAT_SIZE = 3; //en nombre de chunks
 	#endif // DEBUG
@@ -154,67 +156,77 @@ public :
 				for(int z=0;z<MAT_HEIGHT;z++)
 					Chunks[x][y][z]->reset();
 
-		for (int x = 0; x < MAT_SIZE_CUBES; x++)
-			for (int y = 0; y < MAT_SIZE_CUBES; y++)
+#pragma omp parallel
+		{
+			for (int x = 0; x < MAT_SIZE_CUBES; x++)
 			{
-				Perlin.DoPenaltyMiddle = true;
-                Perlin.setFreq(0.04f);
-                float val = Perlin.sample((float)x, (float)y, (float)0);
-                Perlin.DoPenaltyMiddle = false;
-                Perlin.setFreq(0.2f);
-                val -= (1.0f - max(val, Perlin.sample((float)x, (float)y, (float)0))) / 20.0f;
-                
-                int zMax = val * MAT_HEIGHT_CUBES;
-				
-				MCube * cube = getCube(x, y, zMax);
-				cube->setType(MCube::CUBE_HERBE);
-				
-				// Terrain generation
-				for (int z = zMax-1; z >= 0; z--)
+#pragma omp parallel
 				{
-					val = Perlin.sample((float)x, (float)y, (float)z);
-
-					cube = getCube(x, y, z);
-
-					if (val > 0.45f	&& val < 0.55f)
+					for (int y = 0; y < MAT_SIZE_CUBES; y++)
 					{
-						if (z >= MAT_HEIGHT_CUBES * 0.25f)
-							cube->setType(MCube::CUBE_TERRE);
-						if (z < MAT_HEIGHT_CUBES * 0.25f)
-							cube->setType(MCube::CUBE_PIERRE);
+						Perlin.DoPenaltyMiddle = true;
+						Perlin.setFreq(0.04f);
+						float val = Perlin.sample((float)x, (float)y, (float)0);
+						Perlin.DoPenaltyMiddle = false;
+						Perlin.setFreq(0.2f);
+						val -= (1.0f - max(val, Perlin.sample((float)x, (float)y, (float)0))) / 20.0f;
+                
+						int zMax = val * MAT_HEIGHT_CUBES;
+				
+						MCube * cube = getCube(x, y, zMax);
+						cube->setType(MCube::CUBE_HERBE);
+
+#pragma omp parallel
+						{
+							// Terrain generation
+							for (int z = zMax-1; z >= 0; z--)
+							{
+								val = Perlin.sample((float)x, (float)y, (float)z);
+
+								cube = getCube(x, y, z);
+
+								if (val > 0.45f	&& val < 0.55f)
+								{
+									if (z >= MAT_HEIGHT_CUBES * 0.25f)
+										cube->setType(MCube::CUBE_TERRE);
+									if (z < MAT_HEIGHT_CUBES * 0.25f)
+										cube->setType(MCube::CUBE_PIERRE);
 						
+								}
+							}
+						}
+
+						// Water generation
+						for (int z = MAT_HEIGHT_CUBES * 0.45f; z >= zMax; z--)
+						{
+							cube = getCube(x, y, z);
+							cube->setType(MCube::CUBE_EAU);
+
+							if (z == zMax)
+								cube->setType(MCube::CUBE_DALLES_04);
+						}
+
+						if (rand() % 100 < 1 && zMax > MAT_HEIGHT_CUBES * 0.45f)
+						{
+							int sizeTree = 5;
+							for (int k=1; k<5; k++)
+							{
+								getCube(x, y, zMax+k)->setType(MCube::CUBE_BOIS);
+
+								if (k > sizeTree/2)
+									for (int i=-1; i<=1; i++)
+										for (int j=-1; j<=1; j++)
+										{
+											if (!(i == 0 && j == 0))
+												getCube(x+i, y+j, zMax+k)->setType(MCube::CUBE_BRANCHES);
+										}	
+							}					
+							getCube(x, y, zMax+sizeTree)->setType(MCube::CUBE_BRANCHES);
+						}
 					}
 				}
-
-				// Water generation
-				for (int z = MAT_HEIGHT_CUBES * 0.45f; z >= zMax; z--)
-				{
-					cube = getCube(x, y, z);
-					cube->setType(MCube::CUBE_EAU);
-
-					if (z == zMax)
-						cube->setType(MCube::CUBE_DALLES_04);
-				}
-
-				if (rand() % 100 < 1 && zMax > MAT_HEIGHT_CUBES * 0.45f)
-				{
-					int sizeTree = 5;
-					for (int k=1; k<5; k++)
-					{
-						getCube(x, y, zMax+k)->setType(MCube::CUBE_BOIS);
-
-						if (k > sizeTree/2)
-							for (int i=-1; i<=1; i++)
-								for (int j=-1; j<=1; j++)
-								{
-									if (!(i == 0 && j == 0))
-										getCube(x+i, y+j, zMax+k)->setType(MCube::CUBE_BRANCHES);
-								}	
-					}					
-					getCube(x, y, zMax+sizeTree)->setType(MCube::CUBE_BRANCHES);
-				}
-				
 			}
+		}
 
 		for(int x=0;x<MAT_SIZE;x++)
 			for(int y=0;y<MAT_SIZE;y++)
@@ -499,44 +511,241 @@ public :
 	}
 
 	/**
-	* Attention ce code n'est pas optimal, il est compr�hensible. Il existe de nombreuses
-	* versions optimis�es de ce calcul.
+	* Attention ce code n'est pas optimal, il est compréhensible. Il existe de nombreuses
+	* versions optimisées de ce calcul.
 	*/
-	inline bool intersecDroitePlan(const YVec3f & debSegment, const  YVec3f & finSegment,
-		const YVec3f & p1Plan, const YVec3f & p2Plan, const YVec3f & p3Plan,
-		YVec3f & inter)
+	inline bool intersecDroitePlan(const YVec3f& debSegment, const  YVec3f& finSegment,
+		const YVec3f& p1Plan, const YVec3f& p2Plan, const YVec3f& p3Plan,
+		YVec3f& inter)
 	{
-		
+		//Equation du plan :
+		YVec3f nrmlAuPlan = (p1Plan - p2Plan).cross(p3Plan - p2Plan); //On a les a,b,c du ax+by+cz+d = 0
+		float d = -(nrmlAuPlan.X * p2Plan.X + nrmlAuPlan.Y * p2Plan.Y + nrmlAuPlan.Z * p2Plan.Z); //On remarque que c'est un produit scalaire...
+
+		//Equation de droite :
+		YVec3f dirDroite = finSegment - debSegment;
+
+		//On resout l'équation de plan
+		float nominateur = -d - nrmlAuPlan.X * debSegment.X - nrmlAuPlan.Y * debSegment.Y - nrmlAuPlan.Z * debSegment.Z;
+		float denominateur = nrmlAuPlan.X * dirDroite.X + nrmlAuPlan.Y * dirDroite.Y + nrmlAuPlan.Z * dirDroite.Z;
+
+		if (denominateur == 0)
+			return false;
+
+		//Calcul de l'intersection
+		float t = nominateur / denominateur;
+		inter = debSegment + (dirDroite * t);
+
+		//Si point avant le debut du segment
+		if (t < 0 || t > 1)
+			return false;
+
 		return true;
 	}
 
 	/**
-	* Attention ce code n'est pas optimal, il est compr�hensible. Il existe de nombreuses
-	* versions optimis�es de ce calcul. Il faut donner les points dans l'ordre (CW ou CCW)
+	* Attention ce code n'est pas optimal, il est compréhensible. Il existe de nombreuses
+	* versions optimisées de ce calcul. Il faut donner les points dans l'ordre (CW ou CCW)
 	*/
-	inline bool intersecDroiteCubeFace(const YVec3f & debSegment, const YVec3f & finSegment,
-		const YVec3f & p1, const YVec3f & p2, const YVec3f & p3, const  YVec3f & p4,
-		YVec3f & inter)
+	inline bool intersecDroiteCubeFace(const YVec3f& debSegment, const YVec3f& finSegment,
+		const YVec3f& p1, const YVec3f& p2, const YVec3f& p3, const  YVec3f& p4,
+		YVec3f& inter)
 	{
-		
+		//On calcule l'intersection
+		bool res = intersecDroitePlan(debSegment, finSegment, p1, p2, p4, inter);
+
+		if (!res)
+			return false;
+
+		//On fait les produits vectoriels
+		YVec3f v1 = p2 - p1;
+		YVec3f v2 = p3 - p2;
+		YVec3f v3 = p4 - p3;
+		YVec3f v4 = p1 - p4;
+
+		YVec3f n1 = v1.cross(inter - p1);
+		YVec3f n2 = v2.cross(inter - p2);
+		YVec3f n3 = v3.cross(inter - p3);
+		YVec3f n4 = v4.cross(inter - p4);
+
+		//on compare le signe des produits scalaires
+		float ps1 = n1.dot(n2);
+		float ps2 = n2.dot(n3);
+		float ps3 = n3.dot(n4);
+
+		if (ps1 >= 0 && ps2 >= 0 && ps3 >= 0)
+			return true;
+
 		return false;
 	}
 
-	bool getRayCollision(const YVec3f & debSegment, const YVec3f & finSegment,
-		YVec3f & inter,
-		int &xCube, int&yCube, int&zCube)
+	bool getRayCollision(const YVec3f& debSegment, const YVec3f& finSegment,
+		YVec3f& inter,
+		int& xCube, int& yCube, int& zCube)
 	{
-		
+		float len = (finSegment - debSegment).getSize();
+
+		int x = (int)(debSegment.X / MCube::CUBE_SIZE);
+		int y = (int)(debSegment.Y / MCube::CUBE_SIZE);
+		int z = (int)(debSegment.Z / MCube::CUBE_SIZE);
+
+		int l = (int)(len / MCube::CUBE_SIZE) + 1;
+
+		int xDeb = x - l;
+		int yDeb = y - l;
+		int zDeb = z - l;
+
+		int xFin = x + l;
+		int yFin = y + l;
+		int zFin = z + l;
+
+		if (xDeb < 0)
+			xDeb = 0;
+		if (yDeb < 0)
+			yDeb = 0;
+		if (zDeb < 0)
+			zDeb = 0;
+
+		if (xFin >= MAT_SIZE_CUBES)
+			xFin = MAT_SIZE_CUBES - 1;
+		if (yFin >= MAT_SIZE_CUBES)
+			yFin = MAT_SIZE_CUBES - 1;
+		if (zFin >= MAT_HEIGHT_CUBES)
+			zFin = MAT_HEIGHT_CUBES - 1;
+
+		float minDist = -1;
+		YVec3f interTmp;
+		for (x = xDeb; x <= xFin; x++)
+			for (y = yDeb; y <= yFin; y++)
+				for (z = zDeb; z <= zFin; z++)
+				{
+					if (getCube(x, y, z)->isSolid())
+					{
+						if (getRayCollisionWithCube(debSegment, finSegment, x, y, z, interTmp))
+						{
+							if ((debSegment - interTmp).getSqrSize() < minDist || minDist == -1)
+							{
+								minDist = (debSegment - interTmp).getSqrSize();
+								inter = interTmp;
+								xCube = x;
+								yCube = y;
+								zCube = z;
+
+							}
+						}
+					}
+				}
+
+		if (minDist != -1)
+			return true;
+
 		return false;
+
 	}
 
 	/**
-	* De meme cette fonction peut �tre grandement opitimis�e, on a priviligi� la clart�
+	* De meme cette fonction peut être grandement opitimisée, on a priviligié la clarté
 	*/
-	bool getRayCollisionWithCube(const YVec3f & debSegment, const YVec3f & finSegment,
+	bool getRayCollisionWithCube(const YVec3f& debSegment, const YVec3f& finSegment,
 		int x, int y, int z,
-		YVec3f & inter)
+		YVec3f& inter)
 	{
+		float minDist = -1;
+		YVec3f interTemp;
+
+		//Face1
+		if (intersecDroiteCubeFace(debSegment, finSegment,
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			interTemp))
+		{
+			if ((interTemp - debSegment).getSqrSize() < minDist || minDist == -1)
+			{
+				minDist = (interTemp - debSegment).getSqrSize();
+				inter = interTemp;
+			}
+		}
+
+		//Face2
+		if (intersecDroiteCubeFace(debSegment, finSegment,
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			interTemp))
+		{
+			if ((interTemp - debSegment).getSqrSize() < minDist || minDist == -1)
+			{
+				minDist = (interTemp - debSegment).getSqrSize();
+				inter = interTemp;
+			}
+		}
+
+		//Face3
+		if (intersecDroiteCubeFace(debSegment, finSegment,
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			interTemp))
+		{
+			if ((interTemp - debSegment).getSqrSize() < minDist || minDist == -1)
+			{
+				minDist = (interTemp - debSegment).getSqrSize();
+				inter = interTemp;
+			}
+		}
+
+		//Face4
+		if (intersecDroiteCubeFace(debSegment, finSegment,
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			interTemp))
+		{
+			if ((interTemp - debSegment).getSqrSize() < minDist || minDist == -1)
+			{
+				minDist = (interTemp - debSegment).getSqrSize();
+				inter = interTemp;
+			}
+		}
+
+		//Face5
+		if (intersecDroiteCubeFace(debSegment, finSegment,
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			YVec3f((x + 0) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			interTemp))
+		{
+			if ((interTemp - debSegment).getSqrSize() < minDist || minDist == -1)
+			{
+				minDist = (interTemp - debSegment).getSqrSize();
+				inter = interTemp;
+			}
+		}
+
+		//Face6
+		if (intersecDroiteCubeFace(debSegment, finSegment,
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 0) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 1) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			YVec3f((x + 1) * MCube::CUBE_SIZE, (y + 0) * MCube::CUBE_SIZE, (z + 1) * MCube::CUBE_SIZE),
+			interTemp))
+		{
+			if ((interTemp - debSegment).getSqrSize() < minDist || minDist == -1)
+			{
+				minDist = (interTemp - debSegment).getSqrSize();
+				inter = interTemp;
+			}
+		}
+
+
+		if (minDist < 0)
+			return false;
 
 		return true;
 	}

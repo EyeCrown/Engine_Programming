@@ -27,9 +27,6 @@ public :
     YVec3f SunDirection, SunPosition;
     float boostTime;
 
-    YVbo* SkyCube;
-    
-
     MWorld* World;
     
     MAvatar* Avatar;
@@ -91,6 +88,10 @@ public :
         Renderer->setBackgroundColor(YColor(0.0f,0.5f,1.0f,1.0f));
         Renderer->Camera->setLookAt(YVec3f());
 
+        // World
+        World = new MWorld();
+        World->init_world(0);
+        
         Avatar = new MAvatar(Renderer->Camera, World);
         Renderer->Camera->setPosition(Avatar->Position);
 
@@ -107,21 +108,6 @@ public :
         SunCube->createVboGpu();
         //On relache la m�moire CPU
         SunCube->deleteVboCpu();
-
-
-        /*SkyCube = new YVbo(3, 36, YVbo::PACK_BY_ELEMENT_TYPE);
-        SkyCube->setElementDescription(0, YVbo::Element(3)); //Sommet
-        SkyCube->setElementDescription(1, YVbo::Element(3)); //Normale
-        SkyCube->setElementDescription(2, YVbo::Element(2)); //UV
-        SkyCube->createVboCpu();
-        fillVBOCube(SkyCube);
-        SkyCube->createVboGpu();
-        SkyCube->deleteVboCpu();*/
-        
-
-        // World
-        World = new MWorld();
-        World->init_world(0);
         
         
 
@@ -157,10 +143,10 @@ public :
     {
         Renderer->Camera->update(elapsed);
         Avatar->update(elapsed);
-        //Bird->Update(elapsed);
+        Avatar->Run = GetKeyState(VK_LSHIFT) & 0x80;
+        Renderer->Camera->moveTo(Avatar->Position + YVec3f(0, 0, Avatar->CurrentHeight / 2));
 
         
-
         for (int i = 0; i < nbBirds; i++)
         {
             Birds[i]->Update(elapsed);
@@ -193,17 +179,6 @@ public :
 
         GLuint var;
 
-        // Skybox
-        /*glPushMatrix();
-        glUseProgram(ShaderSkybox);
-        glTranslatef(Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
-        glScalef(175, 175, 175);
-        Renderer->updateMatricesFromOgl();
-        Renderer->sendMatricesToShader(ShaderSkybox);
-        SkyCube->render();
-        glPopMatrix();*/
-        
-
         // Sun
         updateLights(boostTime);
         glPushMatrix();
@@ -216,25 +191,21 @@ public :
         Renderer->sendMatricesToShader(ShaderSun);
         SunCube->render();
         glPopMatrix();
-
-
+        
         // World
         glPushMatrix();
         glUseProgram(ShaderWorld);
         Renderer->sendTimeToShader(DeltaTimeCumul, ShaderWorld);
         MainTexture->setAsShaderInput(ShaderWorld, GL_TEXTURE0, "myTexture");
-
         var = glGetUniformLocation(ShaderWorld, "sunColor");
         glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
         var = glGetUniformLocation(ShaderWorld, "sunPos");
         glUniform3f(var, SunPosition.X, SunPosition.Y, SunPosition.Z);
         var = glGetUniformLocation(ShaderWorld, "camPos");
         glUniform3f(var, Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
-        
         World->render_world_vbo(false, true);
         glPopMatrix();
-
-
+        
         // Bird
         glPushMatrix();
         glUseProgram(ShaderBirds);
@@ -248,7 +219,6 @@ public :
         BirdVBO->renderForPoints();
         glPopMatrix();
 
-
         //Post Process
         Fbo->setAsOutFBO(false);
 
@@ -260,13 +230,6 @@ public :
 
         var = glGetUniformLocation(ShaderPostProcess, "skyColor");
         glUniform3f(var, SkyColor.R, SkyColor.V, SkyColor.B);
-        
-        // var = glGetUniformLocation(ShaderSun, "sunColor");
-        // glUniform3f(var, SunColor.R, SunColor.V, SunColor.B);
-        // var = glGetUniformLocation(ShaderSun, "sunPos");
-        // glUniform3f(var, SunPosition.X, SunPosition.Y, SunPosition.Z);
-        // var = glGetUniformLocation(ShaderSun, "camPos");
-        // glUniform3f(var, Renderer->Camera->Position.X, Renderer->Camera->Position.Y, Renderer->Camera->Position.Z);
 
         // Type of cube where avatar head is
         YVec3f camPos = Renderer->Camera->Position / MCube::CUBE_SIZE;
@@ -294,17 +257,29 @@ public :
     {
         //YLog::log(YLog::ENGINE_INFO, ("Key Pressed > Key " + to_string(key) + " | Special " + to_string(special) + " | Down " + to_string(down) + " | P1 " + to_string(p1) + " | P2 " + to_string(p2)).c_str());
 
-        if (key == 'z' || key == 'Z')
+        if (key == 'z')
             Avatar->avance = down;
-        if (key == 's' || key == 'S')
+        if (key == 's')
             Avatar->recule = down;
-        if (key == 'q' || key == 'Q')
+        if (key == 'q')
             Avatar->gauche = down;
-        if (key == 'd' || key == 'D')
+        if (key == 'd')
             Avatar->droite = down;
+        if (key == ' ')
+            Avatar->Jump = down;
+        if (key == 'g')
+            boostTime += down * 10.0f;
+        if (key == 'e' && !down) {
+            int xC, yC, zC;
+            YVec3f inter;
+            World->getRayCollision(Renderer->Camera->Position,
+                Renderer->Camera->Position + Renderer->Camera->Direction * 30,
+                inter, xC, yC, zC);
+            World->deleteCube(xC, yC, zC);
+        }
 
-        if (key == 'g' || key == 'G')
-            boostTime += 10.0f;
+        /*if (key == 'g' || key == 'G')
+            boostTime += 10.0f;*/
     }
 
     void mouseWheel(int wheel, int dir, int x, int y, bool inUi)

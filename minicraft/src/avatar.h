@@ -33,7 +33,7 @@ public:
 
 	MAvatar(YCamera * cam, MWorld * world)
 	{
-		Position = YVec3f((MWorld::MAT_SIZE_METERS) / 2, (MWorld::MAT_SIZE_METERS) / 2, (MWorld::MAT_HEIGHT_METERS));
+		Position = YVec3f((MWorld::MAT_SIZE_METERS) / 2, (MWorld::MAT_SIZE_METERS) / 2, (MWorld::MAT_HEIGHT_METERS)*0.75f);
 		Height = 1.8f;
 		CurrentHeight = Height;
 		Width = 0.3f;
@@ -55,8 +55,7 @@ public:
 	{
 		//YRenderer::getInstance()->drawSolidCube(Width / 2);
 	}
-
-	/*
+	
 	void update(float elapsed)
 	{
 		if (elapsed > 1.0f / 60.0f)
@@ -64,9 +63,9 @@ public:
 
 		YVec3f force = YVec3f();
 		//Par defaut, on applique la gravité (-100 sur Z), la moitie si dans l'eau
-		/*force = YVec3f(0, 0, -1) * 9.81f;
+		force = YVec3f(0, 0, -1) * 9.81f;
 		if (InWater)
-			force = YVec3f(0, 0, -1) * 0.5f;#1#
+			force = YVec3f(0, 0, -1) * 0.5f;
 
 		float lastheight = CurrentHeight;
 		CurrentHeight = Height;
@@ -78,8 +77,8 @@ public:
 			Position.Z += Height / 4;
 
 		//Si l'avatar n'est pas au sol, alors il ne peut pas sauter
-		/*if (!Standing && !InWater) //On jump tout le temps
-		Jump = false;#1#
+		if (!Standing && !InWater) //On jump tout le temps
+		Jump = false;
 
 		float accel = 40;
 		if (Crouch)
@@ -204,9 +203,9 @@ public:
 			Speed *= pow(0.01f, elapsed);
 
 	}
-	*/
+	
 
-	void update(float elapsed)
+	/*void update(float elapsed)
 	{
 		if (avance)
 			GoForward();
@@ -216,8 +215,7 @@ public:
 			GoLeft();
 		if (droite)
 			GoRight();
-		
-	}
+	}*/
 	
 	void GoForward()
 	{

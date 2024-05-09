@@ -21,7 +21,8 @@ extern "C" {
   * POINT D'ENTREE PRINCIPAL
   **/
 int main(int argc, char* argv[])
-{ 
+{
+	srand(time(NULL));
 	YEngine * engine = MEngineMinicraft::getInstance();
 
 	engine->initBase(argc,argv);

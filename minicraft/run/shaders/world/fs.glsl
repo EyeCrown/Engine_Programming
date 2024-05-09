@@ -25,8 +25,8 @@ const float ambientLevel = 0.4;
 
 float noise(vec4 position, float variator, float offset)
 {
-    return 0.5f * sin(position.x / 3 + variator) 
-    + 0.05f * sin((position.y+position.x) + variator) 
+    return 0.1 * sin(position.x / 1 + variator) 
+    - 0.025f * sin((position.y + position.x) + variator) 
     + offset;
 }
 
@@ -35,6 +35,8 @@ void main()
     vec3 toLight = normalize(sunPos - wPos.xyz);
     vec3 newNorm = normal;
     vec2 realUv = vec2((uv.x + type) / 32, uv.y);
+
+    vec3 ambientColor = sunColor * ambientLevel;
 
     float specular = 0;
     
@@ -58,7 +60,6 @@ void main()
 
     float diffuse = max(0, dot(newNorm, toLight));
     
-    
     //color_out =  texture(myTexture, realUv) * vec4(1.0);
-    color_out = texture(myTexture, realUv) * vec4(sqrt(color.rgb * diffuse + sunColor.xyz * specular), color.a);
+    color_out = texture(myTexture, realUv) * vec4(sqrt(color.rgb * (diffuse + ambientColor) + sunColor.xyz * specular), 1.0);
 }

@@ -61,7 +61,7 @@ public :
 		
 	public :
 		YVec3f _NavDir;
-		static const int CUBE_SIZE = 2;
+		static const int CUBE_SIZE = 1;
 		
 		MCube()
 		{
