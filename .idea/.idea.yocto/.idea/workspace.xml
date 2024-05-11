@@ -9,18 +9,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21c8a7c2-eb11-41df-a121-523fe9a3c056" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/minicraft/run/2024_4_29_12_6_32_902.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/minicraft/run/2024_4_29_19_22_3_722.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/minicraft/run/2024_4_29_19_24_37_396.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/minicraft/run/shaders/skybox/fs.glsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screenshots.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.yocto/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/icon.svg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/minicraft/minicraft.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/minicraft.vcxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/postprocess/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/postprocess/fs.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/fs.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/run/shaders/world/vs.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" beforeDir="false" afterPath="$PROJECT_DIR$/minicraft/src/engine_minicraft.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/utils/utils.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/engine/utils/utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/engine/utils/utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_11_18_6_13_784.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_11_18_8_55_475.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_11_18_9_32_254.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_12_12_0_52_551.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_27_15_52_32_95.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_27_15_52_43_506.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_27_16_25_13_361.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_27_16_38_7_288.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_27_16_40_26_179.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_0_34_15_91.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_0_34_34_575.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_0_34_5_277.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_0_4_1_982.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_12_6_32_902.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_15_5_17_926.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_19_22_3_722.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_29_19_24_37_396.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_4_14_18_3_230.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_4_14_55_24_606.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_4_17_35_22_226.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_4_18_54_55_811.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_4_18_55_7_358.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_8_12_0_6_963.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_8_19_7_13_375.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_4_9_9_17_46_54.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_5_8_12_18_48_92.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_5_8_15_23_13_930.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_5_8_15_23_16_386.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_5_8_16_46_1_290.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_5_8_17_10_44_152.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/2024_5_9_9_44_0_448.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/minicraft/run/SunTexture.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,24 +84,28 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/ostream" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/sstream" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/type_traits" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/vector" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xmemory" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../../Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/include/xstring" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/run/shaders/postprocess/fs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/run/shaders/world/fs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/run/shaders/world/vs.glsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/src/avatar.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/src/cube.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/src/engine_minicraft.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/src/main.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/theoc/Coding/ENJMIN/Prog_Engine/minicraft/src/world.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/engine/log/log_console.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/external/gl/freeglut_std.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/external/gl/glew.h" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2dYmYDD8K2QCjgHLV2TZzRJEmrX" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -87,6 +115,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;C++ Project.minicraft.executor&quot;: &quot;Run&quot;,
     &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML Sequence&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -103,8 +132,8 @@
   },
   &quot;keyToStringList&quot;: {
     &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\theoc\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
       &quot;C:\\Users\\theoc\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
@@ -179,7 +208,7 @@
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXE_PATH" value="$(LocalDebuggerCommand)" />
         <option name="PROGRAM_PARAMETERS" value="$(LocalDebuggerCommandArguments)" />
-        <option name="WORKING_DIRECTORY" value="$(LocalDebuggerWorkingDirectory)" />
+        <option name="WORKING_DIRECTORY" value="$(LocalDebuggerWorkingDirectory)\run\" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="0" />
       </configuration_2>
@@ -262,6 +291,9 @@
       <workItem from="1714411168813" duration="7716000" />
       <workItem from="1714769305386" duration="3011000" />
       <workItem from="1714937403888" duration="2931000" />
+      <workItem from="1715169942824" duration="11062000" />
+      <workItem from="1715239370788" duration="5881000" />
+      <workItem from="1715419668692" duration="1553000" />
     </task>
     <task id="LOCAL-00001" summary="Working on day 2">
       <option name="closed" value="true" />
@@ -431,7 +463,23 @@
       <option name="project" value="LOCAL" />
       <updated>1714343705238</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Add sinus effect on water">
+      <option name="closed" value="true" />
+      <created>1715164197382</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1715164197382</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Work done">
+      <option name="closed" value="true" />
+      <created>1715245852627</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1715245852627</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -474,7 +522,9 @@
     <MESSAGE value="Specular is back from the dead" />
     <MESSAGE value="Birds are cool enough" />
     <MESSAGE value="Beautiful trees" />
-    <option name="LAST_COMMIT_MESSAGE" value="Beautiful trees" />
+    <MESSAGE value="Add sinus effect on water" />
+    <MESSAGE value="Work done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

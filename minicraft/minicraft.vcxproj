@@ -47,7 +47,11 @@
     <None Include="run\shaders\world\vs.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Readme.md" />
     <Content Include="run\atlas.png" />
+    <Content Include="run\minicraft.exe" />
+    <Content Include="run\minicraft.exp" />
+    <Content Include="run\minicraft.lib" />
     <Content Include="run\shaders\birds\gs.glsl" />
     <Content Include="run\shaders\postprocess\vs.glsl" />
     <Content Include="run\shaders\skybox\fs.glsl" />
