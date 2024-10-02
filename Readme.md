@@ -1,16 +1,26 @@
-# Compte-rendu du TP de programmation moteur
-### Théophile CARRASCO - P20
-### M1 JMIN Programmation - ENJMIN 2023/2024
+# Engine Programming
 
-Durant ce tp, j'ai intégré les éléments présentés par le professeur durant son cours.
+[![ENJMIN](https://img.shields.io/badge/%20ENJMIN-c1002a?style=for-the-badge)](https://enjmin.cnam.fr/)
+![Static Badge](https://img.shields.io/badge/c%2B%2B-ffffff?style=for-the-badge&logo=opengl&logoSize=auto&color=white)
 
-Par la suite, j'ai ajouté:
-- La création d'arbres
-- Une génération de terrain plus cohérente
-- Des "oiseaux" utilisant le geometry shader
-- Des effets de postprocess quand la camera se trouve dans l'eau
+# Presentation
 
-Pistes d'amélioration: 
-- Optimiser la création du terrain en temps
-- Implémenter un système de Boids pour les oiseaux
-- Ajouter des effets de lumières tels que les god rays
+This is 3D game engine school project. The engine is developped in C++ using **OpenGL** and the goal is to recreate a minecraft like environment
+
+[![Youtube Demo](https://img.shields.io/badge/Demo-ff0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=K5TqSyxehdk)
+
+## Topics
+- Graphic pipeline
+- VAO, VBO
+- MVP Matrix
+
+## Features added
+- Tree generation
+- More coherent land generation
+- Add *"birds"* using geometry shader
+- In-water post process effects
+
+## What can be done 
+- Optimise land generation
+- Implement Boids system for *"birds"*
+- Add lighting effects like god rays
