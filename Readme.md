@@ -1,11 +1,11 @@
 # Engine Programming
 
 [![ENJMIN](https://img.shields.io/badge/%20ENJMIN-c1002a?style=for-the-badge)](https://enjmin.cnam.fr/)
-![Static Badge](https://img.shields.io/badge/c%2B%2B-ffffff?style=for-the-badge&logo=opengl&logoSize=auto&color=white)
+![Cplusplus](https://img.shields.io/badge/made%20in%20c%2B%2B-ffffff?style=for-the-badge&logo=opengl&logoSize=auto&color=white)
 
 # Presentation
 
-This is 3D game engine school project. The engine is developped in C++ using **OpenGL** and the goal is to recreate a minecraft like environment
+This is a 3D game engine school project. The engine is developped in C++ using **OpenGL** and the goal is to recreate a minecraft like environment
 
 ## Topics
 - Graphic pipeline
