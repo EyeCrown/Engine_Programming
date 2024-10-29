@@ -5,7 +5,7 @@
 
 # Presentation
 
-This is a 3D game engine school project. The engine is developped in C++ using **OpenGL** and the goal is to recreate a minecraft like environment
+This is a 3D game engine school project. The engine is developed in C++ using **OpenGL** and the goal is to recreate a minecraft like environment.
 
 ## Topics
 - Graphic pipeline
